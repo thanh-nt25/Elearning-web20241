@@ -1,6 +1,22 @@
 import React from "react";
 
 function StudentHomePage() {
+  const { studentViewCoursesList, setStudentViewCoursesList } =
+    useContext(StudentContext);
+  const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  function handleNavigateToCoursesPage(getCurrentId) {
+    console.log(getCurrentId);
+    sessionStorage.removeItem("filters");
+    const currentFilter = {
+      category: [getCurrentId],
+    };
+
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+
+    navigate("/courses");
+  }
   return (
     <div className="min-h-screen bg-white">
       <section className="flex flex-col lg:flex-row items-center justify-between py-8 px-4 lg:px-8">
