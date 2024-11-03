@@ -6,17 +6,12 @@ function StudentHomePage() {
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  function handleNavigateToCoursesPage(getCurrentId) {
-    console.log(getCurrentId);
-    sessionStorage.removeItem("filters");
-    const currentFilter = {
-      category: [getCurrentId],
-    };
 
-    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
-
-    navigate("/courses");
+  async function fetchAllStudentViewCourses() {
+    const response = await fetchStudentViewCourseListService();
+    if (response?.success) setStudentViewCoursesList(response?.data);
   }
+
   return (
     <div className="min-h-screen bg-white">
       <section className="flex flex-col lg:flex-row items-center justify-between py-8 px-4 lg:px-8">
