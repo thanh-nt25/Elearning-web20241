@@ -1,0 +1,34 @@
+Database Relationships Description for E-Learning Project
+
+1. User Relationships:
+- Users can enroll in multiple Courses (Many-to-Many)
+- Users can create/own multiple Courses (One-to-Many)
+- Users can have multiple Progress records (One-to-Many)
+- Users can have multiple Reviews (One-to-Many)
+
+2. Course Relationships:
+- Courses belong to one Category (Many-to-One)
+- Courses have multiple Lessons (One-to-Many)
+- Courses have multiple Reviews (One-to-Many)
+- Courses have multiple Enrollments (One-to-Many)
+- Courses belong to one Instructor (Many-to-One)
+
+3. Lesson Relationships:
+- Lessons belong to one Course (Many-to-One)
+- Lessons can have multiple Progress records (One-to-Many)
+- Lessons can have multiple Resources/Materials (One-to-Many)
+
+4. Progress Relationships:
+- Progress records belong to one User (Many-to-One)
+- Progress records belong to one Lesson (Many-to-One)
+- Progress records belong to one Course (Many-to-One)
+
+5. Review Relationships:
+- Reviews belong to one User (Many-to-One)
+- Reviews belong to one Course (Many-to-One)
+
+6. Category Relationships:
+- Categories can have multiple Courses (One-to-Many)
+
+7. Resource/Material Relationships:
+- Resources belong to one Lesson (Many-to-One)
