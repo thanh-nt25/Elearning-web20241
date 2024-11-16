@@ -32,3 +32,78 @@ Database Relationships Description for E-Learning Project
 
 7. Resource/Material Relationships:
 - Resources belong to one Lesson (Many-to-One)
+
+Sample Course Database Entries:
+
+1. Introduction to Python Programming
+    - ID: CS101
+    - Instructor: John Smith
+    - Category: Programming
+    - Level: Beginner
+    - Duration: 8 weeks
+
+2. Advanced Web Development
+    - ID: WD401
+    - Instructor: Sarah Johnson
+    - Category: Web Development
+    - Level: Advanced
+    - Duration: 12 weeks
+
+3. Data Science Fundamentals
+    - ID: DS201
+    - Instructor: Michael Chen
+    - Category: Data Science
+    - Level: Intermediate
+    - Duration: 10 weeks
+
+[... continuing with 97 more similar entries with varied content in:
+- Business Analytics
+- Machine Learning
+- Mobile Development
+- Cloud Computing
+- Cybersecurity
+- UI/UX Design
+- Digital Marketing
+- Database Management
+- Network Engineering
+- Game Development
+- DevOps
+- Artificial Intelligence
+- Blockchain Technology
+- Software Testing
+- Project Management]
+4. Full Stack JavaScript Development
+    - ID: WD301
+    - Instructor: Emma Davis
+    - Category: Web Development
+    - Level: Intermediate
+    - Description: Comprehensive JavaScript stack from frontend to backend
+    - Price: 299.99
+    - Language: English
+
+5. Artificial Intelligence Ethics
+    - ID: AI501
+    - Instructor: Dr. Robert Wilson
+    - Category: Artificial Intelligence
+    - Level: Advanced
+    - Description: Exploring ethical implications of AI development
+    - Price: 399.99
+    - Language: English
+
+[... continuing with detailed entries for courses like:]
+
+- Cloud Architecture with AWS
+- Mobile App Development with React Native
+- Cybersecurity Fundamentals
+- Machine Learning with Python
+- Digital Marketing Analytics
+- UI/UX Design Principles
+- Database Management with SQL
+- DevOps Engineering Practices
+- Blockchain Development
+- Software Testing Automation
+- Agile Project Management
+- Internet of Things (IoT)
+- Big Data Analytics
+- Enterprise Architecture
+- Network Security
