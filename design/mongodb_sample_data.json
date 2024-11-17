@@ -1,0 +1,110 @@
+{
+    "User": [
+        {
+            "userName": "JohnDoe",
+            "userEmail": "johndoe@example.com",
+            "password": "hashed_password_123",
+            "role": "student"
+        },
+        {
+            "userName": "JaneInstructor",
+            "userEmail": "janeinstructor@example.com",
+            "password": "hashed_password_456",
+            "role": "instructor"
+        }
+    ],
+    "StudentCourses": [
+        {
+            "userId": "user_id_1",
+            "courses": [
+                {
+                    "courseId": "course_id_1",
+                    "title": "Introduction to Python",
+                    "instructorId": "instructor_id_1",
+                    "instructorName": "Jane Instructor",
+                    "dateOfPurchase": "2024-11-01T00:00:00Z",
+                    "courseImage": "image_url_1"
+                }
+            ]
+        }
+    ],
+    "Order": [
+        {
+            "userId": "user_id_1",
+            "userName": "JohnDoe",
+            "userEmail": "johndoe@example.com",
+            "orderStatus": "Completed",
+            "paymentMethod": "Credit Card",
+            "paymentStatus": "Paid",
+            "orderDate": "2024-11-01T12:00:00Z",
+            "paymentId": "payment_id_123",
+            "payerId": "payer_id_456",
+            "instructorId": "instructor_id_1",
+            "instructorName": "Jane Instructor",
+            "courseImage": "image_url_1",
+            "courseTitle": "Introduction to Python",
+            "courseId": "course_id_1",
+            "coursePricing": "49.99"
+        }
+    ],
+    "CourseProgress": [
+        {
+            "userId": "user_id_1",
+            "courseId": "course_id_1",
+            "completed": false,
+            "completionDate": null,
+            "lecturesProgress": [
+                {
+                    "lectureId": "lecture_1",
+                    "viewed": true,
+                    "dateViewed": "2024-11-02T14:00:00Z"
+                },
+                {
+                    "lectureId": "lecture_2",
+                    "viewed": false,
+                    "dateViewed": null
+                }
+            ]
+        }
+    ],
+    "Course": [
+        {
+            "instructorId": "instructor_id_1",
+            "instructorName": "Jane Instructor",
+            "date": "2024-10-01T00:00:00Z",
+            "title": "Introduction to Python",
+            "category": "Programming",
+            "level": "Beginner",
+            "primaryLanguage": "English",
+            "subtitle": "Learn Python from Scratch",
+            "description": "This course covers Python basics and intermediate concepts.",
+            "image": "image_url_1",
+            "welcomeMessage": "Welcome to Python 101!",
+            "pricing": 49.99,
+            "objectives": "Master Python programming fundamentals",
+            "students": [
+                {
+                    "studentId": "user_id_1",
+                    "studentName": "JohnDoe",
+                    "studentEmail": "johndoe@example.com",
+                    "paidAmount": "49.99"
+                }
+            ],
+            "curriculum": [
+                {
+                    "title": "Introduction",
+                    "videoUrl": "video_url_1",
+                    "public_id": "public_1",
+                    "freePreview": true
+                },
+                {
+                    "title": "Variables and Data Types",
+                    "videoUrl": "video_url_2",
+                    "public_id": "public_2",
+                    "freePreview": false
+                }
+            ],
+            "isPublised": true
+        }
+    ]
+}
