@@ -1,6 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent } from "@/components/ui/dropdown-menu";
 import { filterOptions } from "@/config";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { ArrowUpDownIcon } from "lucide-react";
 
 function StudentViewCoursesPage() {
 
@@ -41,8 +43,15 @@ function StudentViewCoursesPage() {
                 <main>
                     <div className="flex justify-end items-center mb-4 gap-5">
                         <DropdownMenu>
-                            <DropdownMenuTrigger>
-
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="flex items-center gap-2 p-5"
+                                >
+                                    <ArrowUpDownIcon className="h-4 w-4" />
+                                    <span className="text-[16px] font-medium">Sort By</span>
+                                </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
 
