@@ -1,5 +1,7 @@
 const Course = require("../../models/Course");
 
+
+//Add new course//
 const addNewCourse = async (req, res) => {
   try {
     const courseData = req.body;
@@ -22,6 +24,7 @@ const addNewCourse = async (req, res) => {
   }
 };
 
+// Get all courses//
 const getAllCourses = async (req, res) => {
 
   
@@ -52,6 +55,7 @@ const getAllCourses = async (req, res) => {
   }
 };
 
+//Find courses//
 const getCourseDetailsByID = async (req, res) => {
   try {
     const { id } = req.params;
@@ -77,6 +81,8 @@ const getCourseDetailsByID = async (req, res) => {
   }
 };
 
+
+//Update course//
 const updateCourseByID = async (req, res) => {
   try {
     const { id } = req.params;
