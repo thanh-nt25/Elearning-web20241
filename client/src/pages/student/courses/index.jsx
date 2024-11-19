@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent } from "@/components/ui/dropdown-menu";
-import { filterOptions } from "@/config";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu";
+import { filterOptions, sortOptions } from "@/config";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ArrowUpDownIcon } from "lucide-react";
+import { useState } from "react";
 
 function StudentViewCoursesPage() {
+    const [sort, setSort] = useState("price-lowtohigh");
 
 
     return (
@@ -54,7 +56,17 @@ function StudentViewCoursesPage() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-
+                                <DropdownMenuRadioGroup value={sort}
+                                    onValueChange={(value) => setSort(value)}>
+                                    {sortOptions.map((sortItem) => (
+                                        <DropdownMenuRadioItem
+                                            value={sortItem.id}
+                                            key={sortItem.id}
+                                        >
+                                            {sortItem.label}
+                                        </DropdownMenuRadioItem>
+                                    ))}
+                                </DropdownMenuRadioGroup>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
