@@ -1,6 +1,6 @@
 const User = require("../../models/User");
 const Course = require("../../models/Course");
-// Thêm người dùng mới
+// Add new user //
 const addNewUser = async (req, res) => {
   try {
     const userData = req.body;
@@ -22,7 +22,7 @@ const addNewUser = async (req, res) => {
     });
   }
 };
-
+// Get all user //
 const getAllUsers = async (req, res) => {
     try {
       const usersList = await User.find({});

@@ -82,7 +82,7 @@ const getCourseDetailsByID = async (req, res) => {
 };
 
 
-//Update course//
+// Update course//
 const updateCourseByID = async (req, res) => {
   try {
     const { id } = req.params;
