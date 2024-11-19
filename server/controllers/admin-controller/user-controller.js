@@ -71,6 +71,7 @@ const getAllUsers = async (req, res) => {
     }
   };
 
+  // Find users //
 const getUserDetailsByID = async (req, res) => {
   try {
     const { id } = req.params;
@@ -96,6 +97,7 @@ const getUserDetailsByID = async (req, res) => {
   }
 };
 
+// Update users //
 const updateUserByID = async (req, res) => {
   try {
     const { id } = req.params;
