@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { filterOptions, sortOptions } from "@/config";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ArrowUpDownIcon } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 function StudentViewCoursesPage() {
     const [sort, setSort] = useState("price-lowtohigh");
-
+    const {
+        studentViewCoursesList,
+        setStudentViewCoursesList,
+        loadingState,
+        setLoadingState,
+    } = useContext(StudentContext);
 
     return (
         <div className="container mx-auto p-4">
@@ -71,6 +78,48 @@ function StudentViewCoursesPage() {
                         </DropdownMenu>
                     </div>
                     <div className="space-y-4">
+                        {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
+                            studentViewCoursesList.map((courseItem) => (
+                                <Card
+                                    onClick={() => handleCourseNavigate(courseItem?._id)}
+                                    className="cursor-pointer"
+                                    key={courseItem?._id}
+                                >
+                                    <CardContent className="flex gap-4 p-4">
+                                        <div className="w-48 h-32 flex-shrink-0">
+                                            <img
+                                                src={courseItem?.image}
+                                                className="w-ful h-full object-cover"
+                                            />
+                                        </div>
+                                        <div className="flex-1">
+                                            <CardTitle className="text-xl mb-2">
+                                                {courseItem?.title}
+                                            </CardTitle>
+                                            <p className="text-sm text-gray-600 mb-1">
+                                                Created By{" "}
+                                                <span className="font-bold">
+                                                    {courseItem?.instructorName}
+                                                </span>
+                                            </p>
+                                            <p className="text-[16px] text-gray-600 mt-3 mb-2">
+                                                {`${courseItem?.curriculum?.length} ${courseItem?.curriculum?.length <= 1
+                                                    ? "Lecture"
+                                                    : "Lectures"
+                                                    } - ${courseItem?.level.toUpperCase()} Level`}
+                                            </p>
+                                            <p className="font-bold text-lg">
+                                                ${courseItem?.pricing}
+                                            </p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))
+                        ) : loadingState ? (
+                            <Skeleton />
+                        ) : (
+                            <h1 className="font-extrabold text-4xl">No Courses Found</h1>
+                        )}
                     </div>
 
                 </main>
