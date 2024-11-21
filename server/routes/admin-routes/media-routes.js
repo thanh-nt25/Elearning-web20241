@@ -9,6 +9,7 @@ const router = express.Router();
 
 const upload = multer({ dest: "uploads/" });
 
+
 router.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const result = await uploadMediaToCloudinary(req.file.path);
@@ -22,6 +23,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     res.status(500).json({ success: false, message: "Error uploading file" });
   }
 });
+
 
 router.delete("/delete/:id", async (req, res) => {
   try {
@@ -46,6 +48,7 @@ router.delete("/delete/:id", async (req, res) => {
     res.status(500).json({ success: false, message: "Error deleting file" });
   }
 });
+
 
 router.post("/bulk-upload", upload.array("files", 10), async (req, res) => {
   try {
