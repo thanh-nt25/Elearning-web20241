@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   addNewUser,
   getAllUsers,
@@ -6,6 +7,7 @@ const {
   updateUserByID,
 } = require("../../controllers/admin-controller/user-controller");
 const router = express.Router();
+
 
 router.post("/add", addNewUser);
 router.get("/get", getAllUsers);
