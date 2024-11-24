@@ -37,8 +37,7 @@ function StudentViewCourseDetailsPage() {
 
     const { auth } = useContext(AuthContext);
 
-    const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
-        useState(null);
+    const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] = useState(null);
     const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
     const [approvalUrl, setApprovalUrl] = useState("");
     const navigate = useNavigate();
