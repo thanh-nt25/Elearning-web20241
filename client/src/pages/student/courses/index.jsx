@@ -15,18 +15,35 @@ import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import {
     checkCoursePurchaseInfoService,
+    fetchStudentViewCourseListService,
 } from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
+function createSearchParamsHelper(filterParams) {
+    const queryParams = [];
+
+    for (const [key, value] of Object.entries(filterParams)) {
+        if (Array.isArray(value) && value.length > 0) {
+            const paramValue = value.join(",");
+
+            queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+        }
+    }
+
+    return queryParams.join("&");
+}
 
 function StudentViewCoursesPage() {
     const [sort, setSort] = useState("price-lowtohigh");
     const [filters, setFilters] = useState({});
+    const [searchParams, setSearchParams] = useSearchParams();
     const {
         studentViewCoursesList,
+        setStudentViewCoursesList,
         loadingState,
+        setLoadingState,
     } = useContext(StudentContext);
     const navigate = useNavigate();
     const { auth } = useContext(AuthContext);
@@ -58,6 +75,18 @@ function StudentViewCoursesPage() {
         sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
     }
 
+    async function fetchAllStudentViewCourses(filters, sort) {
+        const query = new URLSearchParams({
+            ...filters,
+            sortBy: sort,
+        });
+        const response = await fetchStudentViewCourseListService(query);
+        if (response?.success) {
+            setStudentViewCoursesList(response?.data);
+            setLoadingState(false);
+        }
+    }
+
     async function handleCourseNavigate(getCurrentCourseId) {
         const response = await checkCoursePurchaseInfoService(
             getCurrentCourseId,
@@ -72,6 +101,29 @@ function StudentViewCoursesPage() {
             }
         }
     }
+
+    useEffect(() => {
+        const buildQueryStringForFilters = createSearchParamsHelper(filters);
+        setSearchParams(new URLSearchParams(buildQueryStringForFilters));
+    }, [filters]);
+
+    useEffect(() => {
+        setSort("price-lowtohigh");
+        setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+    }, []);
+
+    useEffect(() => {
+        if (filters !== null && sort !== null)
+            fetchAllStudentViewCourses(filters, sort);
+    }, [filters, sort]);
+
+    useEffect(() => {
+        return () => {
+            sessionStorage.removeItem("filters");
+        };
+    }, []);
+
+    console.log(loadingState, "loadingState");
 
     return (
         <div className="container mx-auto p-4">
