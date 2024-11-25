@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
+  console.log("Req body of register",req.body);
+  
   const { userName, userEmail, password, role } = req.body;
 
   const existingUser = await User.findOne({
@@ -32,6 +34,7 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
+  console.log("Req body of login", req.body);
   const { userEmail, password } = req.body;
 
   const checkUser = await User.findOne({ userEmail });

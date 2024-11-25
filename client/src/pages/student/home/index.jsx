@@ -1,5 +1,5 @@
 import { courseCategories } from "@/config";
-import banner from "../../../../public/banner-img.png";
+import banner from "../../../assets/banner-img.png";
 import { Button } from "@/components/ui/button";
 import { useContext, useEffect } from "react";
 import { StudentContext } from "@/context/student-context";
@@ -117,6 +117,7 @@ function StudentHomePage() {
         </div>
       </section>
     </div>
+      
   );
 }
 
