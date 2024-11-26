@@ -47,6 +47,7 @@ function AdminCourses({ listOfCourses }) {
             <TableHeader className="bg-indigo-100">
               <TableRow>
                 <TableHead className="text-left px-4 py-2">Course</TableHead>
+                <TableHead className="text-center px-4 py-2">Instructor</TableHead>
                 <TableHead className="text-center px-4 py-2">Students</TableHead>
                 <TableHead className="text-center px-4 py-2">Revenue</TableHead>
                 <TableHead className="text-right px-4 py-2">Actions</TableHead>
@@ -63,6 +64,9 @@ function AdminCourses({ listOfCourses }) {
                     >
                       <TableCell className="text-left font-medium px-4 py-2">
                         {course?.title}
+                      </TableCell>
+                      <TableCell className="text-center px-4 py-2">
+                        {course?.instructorName}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2">
                         {course?.students?.length}

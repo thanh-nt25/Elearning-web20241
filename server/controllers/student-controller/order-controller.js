@@ -3,6 +3,108 @@ const Order = require("../../models/Order");
 const Course = require("../../models/Course");
 const StudentCourses = require("../../models/StudentCourses");
 
+const createFreeCourseOrder = async (req, res) => {
+  try {
+    const {
+      userId,
+      userName,
+      userEmail,
+      instructorId,
+      instructorName,
+      courseImage,
+      courseTitle,
+      courseId,
+    } = req.body;
+
+    const existingOrder = await Order.findOne({
+      userId,
+      courseId,
+      paymentStatus: "paid",
+    });
+
+    if (existingOrder) {
+      return res.status(400).json({
+        success: false,
+        message: "You have already enrolled in this course!",
+      });
+    }
+
+    const freeCourseOrder = new Order({
+      userId,
+      userName,
+      userEmail,
+      orderStatus: "confirmed",
+      paymentMethod: "free",
+      paymentStatus: "paid",
+      orderDate: new Date(),
+      instructorId,
+      instructorName,
+      courseImage,
+      courseTitle,
+      courseId,
+      coursePricing: 0, 
+    });
+
+    await freeCourseOrder.save();
+
+    const studentCourses = await StudentCourses.findOne({ userId });
+
+    if (studentCourses) {
+      studentCourses.courses.push({
+        courseId,
+        title: courseTitle,
+        instructorId,
+        instructorName,
+        dateOfPurchase: new Date(),
+        courseImage,
+      });
+
+      await studentCourses.save();
+    } else {
+      const newStudentCourses = new StudentCourses({
+        userId,
+        courses: [
+          {
+            courseId,
+            title: courseTitle,
+            instructorId,
+            instructorName,
+            dateOfPurchase: new Date(),
+            courseImage,
+          },
+        ],
+      });
+
+      await newStudentCourses.save();
+    }
+
+    await Course.findByIdAndUpdate(courseId, {
+      $addToSet: {
+        students: {
+          studentId: userId,
+          studentName: userName,
+          studentEmail: userEmail,
+          paidAmount: 0, 
+        },
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "You have successfully enrolled to this free course!",
+      data: freeCourseOrder,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while processing the free course order!",
+    });
+  }
+};
+
+
+//payment
 const createOrder = async (req, res) => {
   try {
     const {
@@ -184,4 +286,4 @@ const capturePaymentAndFinalizeOrder = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, capturePaymentAndFinalizeOrder };
+module.exports = { createFreeCourseOrder, createOrder, capturePaymentAndFinalizeOrder };

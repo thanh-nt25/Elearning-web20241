@@ -380,6 +380,26 @@ export async function captureAndFinalizePaymentService(paymentId, payerId, order
   }
 }
 
+export async function createFreeCourseOrderService(formData) {
+  try {
+    const { data } = await axiosInstance.post(`/student/order/create-free`, formData);
+
+    if (data?.success) {
+      toast.success(data.message || "Enrolled in the free course successfully!");
+    } else {
+      toast.error(data.message || "Failed to enroll in the free course!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error enrolling in free course:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred while enrolling in the free course!"
+    );
+    throw error;
+  }
+}
+
 export async function fetchStudentBoughtCoursesService(studentId) {
   const { data } = await axiosInstance.get(
     `/student/courses-bought/get/${studentId}`

@@ -16,6 +16,7 @@ import {
     checkCoursePurchaseInfoService,
     createPaymentService,
     fetchStudentViewCourseDetailsService,
+    createFreeCourseOrderService
 } from "@/services";
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
@@ -63,34 +64,65 @@ function StudentViewCourseDetailsPage() {
         setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
     }
 
-    async function handleCreatePayment() {
-        const paymentPayload = {
-            userId: auth?.user?._id,
-            userName: auth?.user?.userName,
-            userEmail: auth?.user?.userEmail,
-            orderStatus: "pending",
-            paymentMethod: "paypal",
-            paymentStatus: "initiated",
-            orderDate: new Date(),
-            paymentId: "",
-            payerId: "",
-            instructorId: studentViewCourseDetails?.instructorId,
-            instructorName: studentViewCourseDetails?.instructorName,
-            courseImage: studentViewCourseDetails?.image,
-            courseTitle: studentViewCourseDetails?.title,
-            courseId: studentViewCourseDetails?._id,
-            coursePricing: studentViewCourseDetails?.pricing,
-        };
-
-        console.log(paymentPayload, "paymentPayload");
-        const response = await createPaymentService(paymentPayload);
-
-        if (response.success) {
-            sessionStorage.setItem(
-                "currentOrderId",
-                JSON.stringify(response?.data?.orderId)
-            );
-            setApprovalUrl(response?.data?.approveUrl);
+    async function handleCreatePaymentOrEnroll() {
+        if (studentViewCourseDetails?.pricing === 0) {
+            try {
+                const freeCoursePayload = {
+                    userId: auth?.user?._id,
+                    userName: auth?.user?.userName,
+                    userEmail: auth?.user?.userEmail,
+                    instructorId: studentViewCourseDetails?.instructorId,
+                    instructorName: studentViewCourseDetails?.instructorName,
+                    courseImage: studentViewCourseDetails?.image,
+                    courseTitle: studentViewCourseDetails?.title,
+                    courseId: studentViewCourseDetails?._id,
+                };
+    
+                const response = await createFreeCourseOrderService(freeCoursePayload);
+    
+                if (response?.success) {
+                    window.location.href = "/student-courses";
+                    console.log("Free course enrolled successfully:", response.data);
+                    toast.success("Enrolled in this free course successfully!");
+                } else {
+                    console.error("Failed to enroll in free course:", response?.message);
+                    toast.error("Failed to enroll in the free course!");
+                }
+            } catch (error) {
+                console.error("Error enrolling in free course:", error);
+                toast.error("An error occurred while enrolling in the course!");
+            }
+        } else {
+            const paymentPayload = {
+                userId: auth?.user?._id,
+                userName: auth?.user?.userName,
+                userEmail: auth?.user?.userEmail,
+                orderStatus: "pending",
+                paymentMethod: "paypal",
+                paymentStatus: "initiated",
+                orderDate: new Date(),
+                paymentId: "",
+                payerId: "",
+                instructorId: studentViewCourseDetails?.instructorId,
+                instructorName: studentViewCourseDetails?.instructorName,
+                courseImage: studentViewCourseDetails?.image,
+                courseTitle: studentViewCourseDetails?.title,
+                courseId: studentViewCourseDetails?._id,
+                coursePricing: studentViewCourseDetails?.pricing,
+            };
+    
+            console.log(paymentPayload, "paymentPayload");
+            const response = await createPaymentService(paymentPayload);
+    
+            if (response?.success) {
+                sessionStorage.setItem(
+                    "currentOrderId",
+                    JSON.stringify(response?.data?.orderId)
+                );
+                setApprovalUrl(response?.data?.approveUrl);
+            } else {
+                console.error("Failed to create payment:", response?.message);
+            }
         }
     }
 
@@ -231,9 +263,21 @@ function StudentViewCourseDetailsPage() {
                                     ${studentViewCourseDetails?.pricing}
                                 </span>
                             </div>
-                            <Button onClick={handleCreatePayment} className="w-full">
-                                Buy Now
-                            </Button>
+                            {studentViewCourseDetails?.pricing === 0 ? (
+                                <Button
+                                    onClick={handleCreatePaymentOrEnroll}
+                                    className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Enroll Now
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={handleCreatePaymentOrEnroll}
+                                    className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Buy Now
+                                </Button>
+                            )}
                         </CardContent>
                     </Card>
                 </aside>
