@@ -2,6 +2,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { initialSignInFormData, initialSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
 import { createContext, useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const AuthContext = createContext(null);
 
@@ -16,7 +18,20 @@ export default function AuthProvider({ children }) {
 
   async function handleRegisterUser(event) {
     event.preventDefault();
-    const data = await registerService(signUpFormData);
+    try {
+      const data = await registerService(signUpFormData);
+  
+      if (data.success) {
+        toast.success("Registration successful! Welcome aboard! 🎉");
+        setSignUpFormData({ userName: "", userEmail: "", password: "" });
+        // navigate("/login");
+      } else {
+        toast.error(data.message || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error.message);
+      toast.error("Something went wrong. Please try again later.");
+    }
   }
 
   async function handleLoginUser(event) {
