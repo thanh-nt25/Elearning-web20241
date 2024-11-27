@@ -1,6 +1,4 @@
 const Course = require("../../models/Course");
-
-
 //Add new course//
 // const addNewCourse = async (req, res) => {
 //   try {
