@@ -7,7 +7,7 @@ const {
 } = require("../../controllers/admin-controller/course-controller");
 const router = express.Router();
 
-router.post("/add", addNewCourse);
+// router.post("/add", addNewCourse);
 
 router.get("/get", getAllCourses);
 
