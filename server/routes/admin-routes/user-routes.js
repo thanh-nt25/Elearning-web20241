@@ -10,11 +10,7 @@ const router = express.Router();
 
 
 router.post("/add", addNewUser);
-
 router.get("/get", getAllUsers);
-
 router.get("/get/details/:id", getUserDetailsByID);
-
 router.put("/update/:id", updateUserByID);
-
 module.exports = router;
