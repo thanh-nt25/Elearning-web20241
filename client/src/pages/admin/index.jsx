@@ -1,12 +1,13 @@
 import React from "react";
 import AdminAvatarDefautl from "./assets/admin.jpg"
 import AdminCourses from "@/components/admin-view/courses";
+import AdminUsers from "@/components/admin-view/users";
 import AdminDashboard from "@/components/admin-view/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/auth-context";
 import { AdminContext } from "@/context/admin-context";
-import { fetchAdminCourseListService } from "@/services";
+import { fetchAdminCourseListService, fetchAdminUserListService } from "@/services";
 import { BarChart, Book, LogOut, User } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 
@@ -15,21 +16,29 @@ function AdminDashboardpage() {
   const { auth, resetCredentials } = useContext(AuthContext);
   const { adminCoursesList, setAdminCoursesList } =
     useContext(AdminContext);
+  const { adminUsersList, setAdminUsersList } =
+    useContext(AdminContext);
 
   async function fetchAllCourses() {
-    // console.log(auth?.user?._id, auth?.user?.userName);
-    
     const response = await fetchAdminCourseListService();
-    console.log(response);
     
     if (response?.success) {
       setAdminCoursesList(response?.data);
-      // console.log(response?.data, "response?.data");
+    };
+  }
+
+  async function fetchAllUsers() {
+    const response = await fetchAdminUserListService();
+    console.log("fetchAllUsers response: ",response);
+    
+    if (response?.success) {
+      setAdminUsersList(response?.data);
     };
   }
 
   useEffect(() => {
     fetchAllCourses();
+    fetchAllUsers();
   }, []);
   // console.log(adminCoursesList, "adminCoursesList");
   
@@ -45,6 +54,13 @@ function AdminDashboardpage() {
       label: "Courses",
       value: "courses",
       component: <AdminCourses listOfCourses={adminCoursesList} />,
+    },
+
+    {
+      icon: User,
+      label: "User",
+      value: "user",
+      component: <AdminUsers listOfUsers={adminUsersList} />,
     },
    
     {

@@ -17,6 +17,7 @@ import {
     const [mediaUploadProgressPercentage, setMediaUploadProgressPercentage] =
       useState(0);
     const [adminCoursesList, setAdminCoursesList] = useState([]);
+    const [adminUsersList, setAdminUsersList] = useState([]);
     const [currentEditedCourseId, setCurrentEditedCourseId] = useState(null);
   
     return (
@@ -34,6 +35,8 @@ import {
           setAdminCoursesList,
           currentEditedCourseId,
           setCurrentEditedCourseId,
+          adminUsersList,
+          setAdminUsersList
         }}
       >
         {children}

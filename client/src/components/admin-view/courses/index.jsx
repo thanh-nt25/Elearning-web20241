@@ -26,46 +26,52 @@ function AdminCourses({ listOfCourses }) {
   } = useContext(AdminContext);
 
   return (
-    <Card>
-      <CardHeader className="flex justify-between flex-row items-center">
-        <CardTitle className="text-3xl font-bold">All Courses</CardTitle>
-        <Button
+    <Card className="bg-white shadow-lg border border-gray-200">
+      <CardHeader className="flex justify-between flex-row items-center bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-t-lg">
+        <CardTitle className="text-2xl font-bold">All Courses</CardTitle>
+        {/* <Button
           onClick={() => {
             setCurrentEditedCourseId(null);
             setCourseLandingFormData(courseLandingInitialFormData);
             setCourseCurriculumFormData(courseCurriculumInitialFormData);
             navigate("/admin/create-new-course");
           }}
-          className="p-6"
+          className="bg-yellow-500 hover:bg-yellow-600 text-white rounded-md p-3"
         >
           Create New Course
-        </Button>
+        </Button> */}
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
+          <Table className="w-full bg-white text-gray-700 border-collapse">
+            <TableHeader className="bg-indigo-100">
               <TableRow>
-                <TableHead className="text-left">Course</TableHead>
-                <TableHead className="text-center">Students</TableHead>
-                <TableHead className="text-center">Revenue</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-left px-4 py-2">Course</TableHead>
+                <TableHead className="text-center px-4 py-2">Students</TableHead>
+                <TableHead className="text-center px-4 py-2">Revenue</TableHead>
+                <TableHead className="text-right px-4 py-2">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {listOfCourses && listOfCourses.length > 0
-                ? listOfCourses.map((course) => (
-                    <TableRow>
-                      <TableCell className="text-left font-medium">
+                ? listOfCourses.map((course, index) => (
+                    <TableRow
+                      key={index}
+                      className={`border-b ${
+                        index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                      }`}
+                    >
+                      <TableCell className="text-left font-medium px-4 py-2">
                         {course?.title}
                       </TableCell>
-                      <TableCell className="text-center">{course?.students?.length}</TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-center px-4 py-2">
+                        {course?.students?.length}
+                      </TableCell>
+                      <TableCell className="text-center px-4 py-2">
                         ${course?.students?.length * course?.pricing}
                       </TableCell>
-                      <TableCell className="text-right">
-                        {
-                          course?.students?.length == 0 ? 
+                      <TableCell className="text-right px-4 py-2">
+                        {course?.students?.length == 0 ? (
                           <>
                             <Button
                               onClick={() => {
@@ -73,14 +79,23 @@ function AdminCourses({ listOfCourses }) {
                               }}
                               variant="ghost"
                               size="sm"
+                              className="text-indigo-600 hover:text-indigo-800"
                             >
                               <Edit className="h-6 w-6" />
                             </Button>
-                            <Button variant="ghost" size="sm">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:text-red-800"
+                            >
                               <Delete className="h-6 w-6" />
                             </Button>
-                          </> : <span className="text-gray-500">Course is currently active</span>
-                        }
+                          </>
+                        ) : (
+                          <span className="text-gray-500">
+                            Course is currently active
+                          </span>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))

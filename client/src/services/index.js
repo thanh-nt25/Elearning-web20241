@@ -88,6 +88,12 @@ export async function fetchAdminCourseDetailsService(id) {
   return data;
 }
 
+export async function fetchAdminUserListService() {
+  const { data } = await axiosInstance.get(`/admin/user/get`);
+
+  return data;
+}
+
 // export async function updateCourseByIdService(id, formData) {
 //   const { data } = await axiosInstance.put(
 //     `/admin/course/update/${id}`,
