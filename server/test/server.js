@@ -1,35 +1,136 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
+const User = require("../../models/User");
+const Course = require("../../models/Course");
+// Add new user //
+const addNewUser = async (req, res) => {
+  try {
+    const userData = req.body;
+    const newUser = new User(userData);
+    const savedUser = await newUser.save();
 
-const app = express();
+    if (savedUser) {
+      res.status(201).json({
+        success: true,
+        message: "User added successfully",
+        data: savedUser,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred while adding the user!",
+    });
+  }
+};
+// Get all user //
+const getAllUsers = async (req, res) => {
+    try {
+      const usersList = await User.find({});
+  
+      if (!usersList || usersList.length === 0) {
+        return res.status(200).json({
+          success: true,
+          data: [],
+          message: "No users found!",
+        });
+      }
+  
+      const usersWithCourseInfo = await Promise.all(
+        usersList.map(async (user) => {
+          if (user.role === "instructor") {
+            const createdCoursesCount = await Course.countDocuments({
+              instructorId: user._id.toString(),
+            });
+            return {
+              ...user.toObject(),
+              courseCount: createdCoursesCount, 
+            };
+          } else {
+            const enrolledCoursesCount = await Course.countDocuments({
+              "students.studentId": user._id.toString(),
+            });
+            return {
+              ...user.toObject(),
+              courseCount: enrolledCoursesCount, 
+            };
+          }
+        })
+      );
+      console.log(usersWithCourseInfo);
+      
+      res.status(200).json({
+        success: true,
+        data: usersWithCourseInfo,
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({
+        success: false,
+        message: "Some error occurred while fetching users!",
+      });
+    }
+  };
 
-// Middleware
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  // Find users //
+const getUserDetailsByID = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userDetails = await User.findById(id);
 
-// Test route
-app.get('/test', (req, res) => {
-    res.status(200).json({ message: 'Test server is running!' });
-});
+    if (!userDetails) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
-});
+    res.status(200).json({
+      success: true,
+      data: userDetails,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred while fetching user details!",
+    });
+  }
+};
 
-// 404 handler
-app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
-});
+// Update users //
+const updateUserByID = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedUserData = req.body;
 
-// const PORT = process.env.PORT || 5000;
+    const updatedUser = await User.findByIdAndUpdate(id, updatedUserData, {
+      new: true,
+    });
 
-// app.listen(PORT, () => {
-//     console.log(`Test server is running on port ${PORT}`);
-// });
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
 
-// module.exports = app;
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: updatedUser,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred while updating user!",
+    });
+  }
+};
+
+module.exports = {
+  addNewUser,
+  getAllUsers,
+  getUserDetailsByID,
+  updateUserByID,
+};
