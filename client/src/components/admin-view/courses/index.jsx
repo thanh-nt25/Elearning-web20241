@@ -13,7 +13,7 @@ import {
   courseLandingInitialFormData,
 } from "@/config";
 import { AdminContext } from "@/context/admin-context";
-import { Delete, Edit } from "lucide-react";
+import { Trash2, Edit } from "lucide-react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -88,7 +88,7 @@ function AdminCourses({ listOfCourses }) {
                               size="sm"
                               className="text-red-600 hover:text-red-800"
                             >
-                              <Delete className="h-6 w-6" />
+                              <Trash2 className="h-6 w-6" />
                             </Button>
                           </>
                         ) : (

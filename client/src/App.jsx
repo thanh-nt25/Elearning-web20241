@@ -7,6 +7,7 @@ import InstructorDashboardpage from "./pages/instructor";
 import AddNewCoursePage from "./pages/instructor/add-new-course";
 import AdminDashboardpage from "./pages/admin";
 import AdminAddNewCoursePage from "./pages/admin/add-new-course";
+import AddNewUserPage from "./pages/admin/add-new-user";
 import StudentViewCommonLayout from "./components/student-view/common-layout";
 import StudentLandingPage from "./pages/student/landing";
 import StudentHomePage from "./pages/student/home";
@@ -89,7 +90,7 @@ function App() {
           />
         }
       />
-
+      */}
       <Route
         path="/admin/edit-course/:courseId"
         element={
@@ -100,7 +101,30 @@ function App() {
           />
         }
       />
-       */}
+
+      <Route
+        path="/admin/edit-user/:userId"
+        element={
+          <RouteGuard
+            element={<AddNewUserPage />}
+            authenticated={auth?.authenticate}
+            user={auth?.user}
+          />
+        }
+      />
+
+      <Route
+        path="/admin/create-new-user"
+        element={
+          <RouteGuard
+            element={<AddNewUserPage />}
+            authenticated={auth?.authenticate}
+            user={auth?.user}
+          />
+        }
+      />
+
+       
 
       <Route
         path="/"

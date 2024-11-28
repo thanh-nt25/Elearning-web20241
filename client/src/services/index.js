@@ -74,8 +74,33 @@ export async function updateCourseByIdService(id, formData) {
 // instructor
 
 //admin
+// addNewUserService, , updateUserByIdService
 export async function fetchAdminCourseListService() {
   const { data } = await axiosInstance.get(`/admin/course/get`);
+
+  return data;
+}
+
+export async function updateUserByIdService(userId, userFormData){
+  const { data } = await axiosInstance.put(
+    `/admin/user/update/${userId}`,
+    userFormData
+  );
+
+  return data;
+}
+
+export async function addNewUserService(userFormData){
+  const { data } = await axiosInstance.post(`/admin/user/add`, userFormData);
+
+  return data;
+
+}
+
+export async function fetchUserDetailsService(userId){
+  const { data } = await axiosInstance.get(
+    `/admin/user/get/details/${userId}`
+  );
 
   return data;
 }
@@ -87,7 +112,6 @@ export async function fetchAdminCourseDetailsService(id) {
 
   return data;
 }
-
 export async function fetchAdminUserListService() {
   const { data } = await axiosInstance.get(`/admin/user/get`);
 
