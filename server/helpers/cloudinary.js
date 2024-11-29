@@ -2,9 +2,9 @@ const cloudinary = require("cloudinary").v2;
 
 //configure with env data
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: 'dul3vcbvj',
+  api_key: '143626129998371',
+  api_secret: 'QBm8mryK1e7mSsdyDEJT1zNd5zY',
 });
 
 const uploadMediaToCloudinary = async (filePath) => {
