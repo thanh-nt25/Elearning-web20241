@@ -6,7 +6,12 @@ function RouteGuard({ authenticated, user, element }) {
 
   console.log(authenticated, user, "useruser");
 
-  if (!authenticated && !location.pathname.includes("/auth")) {
+  // chua dang nhap thi navigator den /auth
+  if (!authenticated && 
+    !location.pathname.includes("/auth") && 
+    location.pathname !== "/" &&
+    location.pathname !== "/about"
+  ) {
     return <Navigate to="/auth" />;
   }
 
@@ -16,6 +21,7 @@ function RouteGuard({ authenticated, user, element }) {
     (location.pathname.includes("instructor") ||
       location.pathname.includes("/auth"))
   ) {
+    // ko phai instructor thi navi den home cua user
     return <Navigate to="/home" />;
   }
 
@@ -24,6 +30,7 @@ function RouteGuard({ authenticated, user, element }) {
     user.role === "instructor" &&
     !location.pathname.includes("instructor")
   ) {
+    // user (ko phai instructor)
     return <Navigate to="/instructor" />;
   }
 
