@@ -23,6 +23,7 @@ const addNewCourse = async (req, res) => {
     });
   }
 };
+
 // Get all courses//
 const getAllCourses = async (req, res) => {
 
@@ -53,6 +54,7 @@ const getAllCourses = async (req, res) => {
     });
   }
 };
+
 //Find courses//
 const getCourseDetailsByID = async (req, res) => {
   try {
