@@ -2212,3 +2212,115 @@ Sample Course Database Entries:
 - Big Data Analytics
 - Enterprise Architecture
 - Network Security
+
+
+
+Database Relationships Description for E-Learning Project
+
+1. User Relationships:
+- Users can enroll in multiple Courses (Many-to-Many)
+- Users can create/own multiple Courses (One-to-Many)
+- Users can have multiple Progress records (One-to-Many)
+- Users can have multiple Reviews (One-to-Many)
+
+2. Course Relationships:
+- Courses belong to one Category (Many-to-One)
+- Courses have multiple Lessons (One-to-Many)
+- Courses have multiple Reviews (One-to-Many)
+- Courses have multiple Enrollments (One-to-Many)
+- Courses belong to one Instructor (Many-to-One)
+
+3. Lesson Relationships:
+- Lessons belong to one Course (Many-to-One)
+- Lessons can have multiple Progress records (One-to-Many)
+- Lessons can have multiple Resources/Materials (One-to-Many)
+
+4. Progress Relationships:
+- Progress records belong to one User (Many-to-One)
+- Progress records belong to one Lesson (Many-to-One)
+- Progress records belong to one Course (Many-to-One)
+
+5. Review Relationships:
+- Reviews belong to one User (Many-to-One)
+- Reviews belong to one Course (Many-to-One)
+
+6. Category Relationships:
+- Categories can have multiple Courses (One-to-Many)
+
+7. Resource/Material Relationships:
+- Resources belong to one Lesson (Many-to-One)
+
+Sample Course Database Entries:
+
+1. Introduction to Python Programming
+    - ID: CS101
+    - Instructor: John Smith
+    - Category: Programming
+    - Level: Beginner
+    - Duration: 8 weeks
+
+2. Advanced Web Development
+    - ID: WD401
+    - Instructor: Sarah Johnson
+    - Category: Web Development
+    - Level: Advanced
+    - Duration: 12 weeks
+
+3. Data Science Fundamentals
+    - ID: DS201
+    - Instructor: Michael Chen
+    - Category: Data Science
+    - Level: Intermediate
+    - Duration: 10 weeks
+
+[... continuing with 97 more similar entries with varied content in:
+- Business Analytics
+- Machine Learning
+- Mobile Development
+- Cloud Computing
+- Cybersecurity
+- UI/UX Design
+- Digital Marketing
+- Database Management
+- Network Engineering
+- Game Development
+- DevOps
+- Artificial Intelligence
+- Blockchain Technology
+- Software Testing
+- Project Management]
+4. Full Stack JavaScript Development
+    - ID: WD301
+    - Instructor: Emma Davis
+    - Category: Web Development
+    - Level: Intermediate
+    - Description: Comprehensive JavaScript stack from frontend to backend
+    - Price: 299.99
+    - Language: English
+
+5. Artificial Intelligence Ethics
+    - ID: AI501
+    - Instructor: Dr. Robert Wilson
+    - Category: Artificial Intelligence
+    - Level: Advanced
+    - Description: Exploring ethical implications of AI development
+    - Price: 399.99
+    - Language: English
+
+[... continuing with detailed entries for courses like:]
+
+- Cloud Architecture with AWS
+- Mobile App Development with React Native
+- Cybersecurity Fundamentals
+- Machine Learning with Python
+- Digital Marketing Analytics
+- UI/UX Design Principles
+- Database Management with SQL
+- DevOps Engineering Practices
+- Blockchain Development
+- Software Testing Automation
+- Agile Project Management
+- Internet of Things (IoT)
+- Big Data Analytics
+- Enterprise Architecture
+- Network Security
