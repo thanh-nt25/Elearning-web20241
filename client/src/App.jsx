@@ -10,6 +10,7 @@ import StudentHomePage from "./pages/student/home";
 import NotFoundPage from "./pages/not-found";
 import StudentViewCoursesPage from "./pages/student/courses";
 import StudentViewCourseDetailsPage from "./pages/student/course-details";
+import PaypalPaymentReturnPage from "./pages/student/payment-return";
 import StudentCoursesPage from "./pages/student/student-courses";
 import StudentViewCourseProgressPage from "./pages/student/course-progress";
 import './App.css'
@@ -72,6 +73,7 @@ function App() {
           element={<StudentViewCourseDetailsPage />}
         />
         <Route path="student-courses" element={<StudentCoursesPage />} />
+        <Route path="payment-return" element={<PaypalPaymentReturnPage />} />
         <Route
           path="course-progress/:id"
           element={<StudentViewCourseProgressPage />}

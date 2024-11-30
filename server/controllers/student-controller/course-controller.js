@@ -2,6 +2,8 @@ const Course = require("../../models/Course");
 const StudentCourses = require("../../models/StudentCourses");
 
 const getAllStudentViewCourses = async (req, res) => {
+  console.log("getAllStudentViewCourses: ", req.query);
+  
   try {
     const {
       category = [],
@@ -10,7 +12,7 @@ const getAllStudentViewCourses = async (req, res) => {
       sortBy = "price-lowtohigh",
     } = req.query;
 
-    console.log(req.query, "req.query");
+    // console.log(req.query, "req.query");
 
     let filters = {};
     if (category.length) {
@@ -63,6 +65,7 @@ const getAllStudentViewCourses = async (req, res) => {
 };
 
 const getStudentViewCourseDetails = async (req, res) => {
+  console.log("getStudentViewCourseDetails: ", req.query);
   try {
     const { id } = req.params;
     const courseDetails = await Course.findById(id);
@@ -89,12 +92,14 @@ const getStudentViewCourseDetails = async (req, res) => {
 };
 
 const checkCoursePurchaseInfo = async (req, res) => {
+  console.log("checkCoursePurchaseInfo: ", req.query);
   try {
     const { id, studentId } = req.params;
-    const studentCourses = await StudentCourses.findOne({
+    const studentCourses = await StudentCourses.findOne({ // dang return null
       userId: studentId,
     });
-
+    console.log(StudentCourses);
+    
     const ifStudentAlreadyBoughtCurrentCourse =
       studentCourses.courses.findIndex((item) => item.courseId === id) > -1;
     res.status(200).json({

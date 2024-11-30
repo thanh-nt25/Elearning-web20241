@@ -38,7 +38,7 @@ function StudentHomePage() {
       getCurrentCourseId,
       auth?.user?._id
     );
-
+    // navigate(`/course/details/${getCurrentCourseId}`);
     if (response?.success) {
       if (response?.data) {
         navigate(`/course-progress/${getCurrentCourseId}`);

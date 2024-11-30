@@ -16,7 +16,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 app.use(
     cors({
-      origin: process.env.CLIENT_URL,
+      origin: process.env.CLIENT_URL || 'http://localhost:5173',
       methods: ["GET", "POST", "DELETE", "PUT"],
       allowedHeaders: ["Content-Type", "Authorization"],
     })
@@ -25,7 +25,7 @@ app.use(
 app.use(express.json());
 
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI || 'mongodb+srv://tuanthanh:123456abc@cluster0.lxz5n.mongodb.net/')
   .then(() => console.log("mongodb is connected"))
   .catch((e) => console.log(e));
 
