@@ -79,26 +79,24 @@ function InstructorDashboard({ listOfCourses }) {
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <Table className="w-full">
+          <Table className="w-full table-fixed border-collapse">
               <TableHeader>
                 <TableRow>
-                  <TableHead>Course Name</TableHead>
-                  <TableHead>Student Name</TableHead>
-                  <TableHead>Student Email</TableHead>
+                  <TableHead className="text-left px-4 py-2 w-1/3">Course Name</TableHead>
+                  <TableHead className="text-left px-4 py-2 w-1/3">Student Name</TableHead>
+                  <TableHead className="text-left px-4 py-2 w-1/3">Student Email</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {calculateTotalStudentsAndProfit().studentList.map(
-                  (studentItem, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">
-                        {studentItem.courseTitle}
-                      </TableCell>
-                      <TableCell>{studentItem.studentName}</TableCell>
-                      <TableCell>{studentItem.studentEmail}</TableCell>
-                    </TableRow>
-                  )
-                )}
+                {calculateTotalStudentsAndProfit().studentList.map((studentItem, index) => (
+                  <TableRow key={index} className="border-b">
+                    <TableCell className="text-left font-medium px-4 py-2 w-1/3">
+                      {studentItem.courseTitle}
+                    </TableCell>
+                    <TableCell className="text-left px-4 py-2 w-1/3">{studentItem.studentName}</TableCell>
+                    <TableCell className="text-left px-4 py-2 w-1/3">{studentItem.studentEmail}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>

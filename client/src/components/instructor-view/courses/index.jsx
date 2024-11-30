@@ -46,9 +46,9 @@ function InstructorCourses({ listOfCourses }) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Course</TableHead>
-                <TableHead>Students</TableHead>
-                <TableHead>Revenue</TableHead>
+                <TableHead className="text-left">Course</TableHead>
+                <TableHead className="text-center">Students</TableHead>
+                <TableHead className="text-center">Revenue</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -56,11 +56,11 @@ function InstructorCourses({ listOfCourses }) {
               {listOfCourses && listOfCourses.length > 0
                 ? listOfCourses.map((course) => (
                     <TableRow>
-                      <TableCell className="font-medium">
+                      <TableCell className="text-left font-medium">
                         {course?.title}
                       </TableCell>
-                      <TableCell>{course?.students?.length}</TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">{course?.students?.length}</TableCell>
+                      <TableCell className="text-center">
                         ${course?.students?.length * course?.pricing}
                       </TableCell>
                       <TableCell className="text-right">

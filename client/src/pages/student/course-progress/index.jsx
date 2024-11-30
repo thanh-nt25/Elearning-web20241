@@ -124,15 +124,15 @@ function StudentViewCourseProgressPage() {
       {showConfetti && <Confetti />}
       <div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
         <div className="flex items-center space-x-4">
-          <Button
-            onClick={() => navigate("/student-courses")}
-            className="text-black"
-            variant="ghost"
-            size="sm"
-          >
-            <ChevronLeft className="h-4 w-4 mr-2" />
-            Back to My Courses Page
-          </Button>
+        <Button
+          onClick={() => navigate("/student-courses")}
+          className="text-black bg-white hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-4 py-2 rounded-md shadow-sm"
+          variant="ghost"
+          size="sm"
+        >
+          <ChevronLeft className="h-4 w-4 mr-2" />
+          Back to My Courses Page
+        </Button>
           <h1 className="text-lg font-bold hidden md:block">
             {studentCurrentCourseProgress?.courseDetails?.title}
           </h1>
@@ -171,13 +171,13 @@ function StudentViewCourseProgressPage() {
             <TabsList className="grid bg-[#1c1d1f] w-full grid-cols-2 p-0 h-14">
               <TabsTrigger
                 value="content"
-                className=" text-black rounded-none h-full"
+                className=" text-white rounded-none h-full"
               >
                 Course Content
               </TabsTrigger>
               <TabsTrigger
                 value="overview"
-                className=" text-black rounded-none h-full"
+                className=" text-white rounded-none h-full"
               >
                 Overview
               </TabsTrigger>
