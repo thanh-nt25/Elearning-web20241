@@ -73,6 +73,33 @@ export async function updateCourseByIdService(id, formData) {
 }
 // instructor
 
+//admin
+export async function fetchAdminCourseListService() {
+  const { data } = await axiosInstance.get(`/admin/course/get`);
+
+  return data;
+}
+
+export async function fetchAdminCourseDetailsService(id) {
+  const { data } = await axiosInstance.get(
+    `/admin/course/get/details/${id}`
+  );
+
+  return data;
+}
+
+// export async function updateCourseByIdService(id, formData) {
+//   const { data } = await axiosInstance.put(
+//     `/admin/course/update/${id}`,
+//     formData
+//   );
+
+//   return data;
+// }
+
+
+//admin
+
 export async function mediaBulkUploadService(formData, onProgressCallback) {
   const { data } = await axiosInstance.post("/media/bulk-upload", formData, {
     onUploadProgress: (progressEvent) => {
