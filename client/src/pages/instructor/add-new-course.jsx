@@ -16,7 +16,7 @@ import {
   updateCourseByIdService,
 } from "@/services";
 import { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 function AddNewCoursePage() {
   const {
@@ -31,6 +31,9 @@ function AddNewCoursePage() {
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
   const params = useParams();
+  const location = useLocation();
+
+  const isEditPage = location.pathname.includes("edit-course");
 
   console.log(params);
 
@@ -132,7 +135,9 @@ function AddNewCoursePage() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between">
-        <h1 className="text-3xl font-extrabold mb-5">Create a new course</h1>
+        <h1 className="text-3xl font-extrabold mb-5">
+          {isEditPage ? "Edit course details" : "Create a new course"}
+        </h1>
         <Button
           disabled={!validateFormData()}
           className="text-sm tracking-wider font-bold px-8"

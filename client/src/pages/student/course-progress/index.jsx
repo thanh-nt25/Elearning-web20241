@@ -159,7 +159,8 @@ function StudentViewCourseProgressPage() {
             progressData={currentLecture}
           />
           <div className="p-6 bg-[#1c1d1f]">
-            <h2 className="text-2xl font-bold mb-2">{currentLecture?.title}</h2>
+            <h2 className="text-left text-2xl font-bold mb-2">{currentLecture?.title}</h2>
+            <h3 className="text-left mb-2">{studentCurrentCourseProgress?.courseDetails?.description}</h3>
           </div>
         </div>
         <div
@@ -209,7 +210,7 @@ function StudentViewCourseProgressPage() {
               <ScrollArea className="h-full">
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-4">About this course</h2>
-                  <p className="text-gray-400">
+                  <p className="text-gray-400 text-left ml-4">
                     {studentCurrentCourseProgress?.courseDetails?.description}
                   </p>
                 </div>
