@@ -22,6 +22,7 @@ import { ArrowUpDownIcon, SearchIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+// Hàm tạo chuỗi query cho các tham số tìm kiếm và bộ lọc
 function createSearchParamsHelper(filterParams, searchQuery) {
     const queryParams = [];
 
@@ -40,7 +41,10 @@ function createSearchParamsHelper(filterParams, searchQuery) {
     return queryParams.join("&");
 }
 
+// Định nghĩa trang xem danh sách khóa học cho sinh viên
 function StudentViewCoursesPage() {
+
+    // Khai báo và quản lý các state cục bộ
     const [sort, setSort] = useState("price-lowtohigh");
     const [filters, setFilters] = useState({});
     const [purchaseStatus, setPurchaseStatus] = useState({});
@@ -51,13 +55,13 @@ function StudentViewCoursesPage() {
         loadingState,
         setLoadingState,
     } = useContext(StudentContext);
-    //search
     const [searchQuery, setSearchQuery] = useState("");
     const [searchInput, setSearchInput] = useState("");
     const [searchTimeout, setSearchTimeout] = useState(null);
     const navigate = useNavigate();
     const { auth } = useContext(AuthContext);
 
+    // Xử lý thay đổi lựa chọn bộ lọc
     function handleFilterOnChange(getSectionId, getCurrentOption) {
         let cpyFilters = { ...filters };
         const indexOfCurrentSeection =
@@ -85,6 +89,7 @@ function StudentViewCoursesPage() {
         sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
     }
 
+    // Hàm lấy danh sách khóa học từ server dựa trên các bộ lọc, sắp xếp và tìm kiếm
     async function fetchAllStudentViewCourses(filters, sort, search) {
         const query = new URLSearchParams({
             ...filters,
@@ -98,6 +103,7 @@ function StudentViewCoursesPage() {
         }
     }
 
+    // Hàm xử lý chuyển trang khi người dùng click vào một khóa học
     async function handleCourseNavigate(getCurrentCourseId) {
         const response = await checkCoursePurchaseInfoService(
             getCurrentCourseId,
@@ -113,29 +119,32 @@ function StudentViewCoursesPage() {
         }
     }
 
+    // Xử lý hiển thị nút mua hoặc tiếp tục học tùy thuộc vào tình trạng mua khóa học
     async function handleBuyButtonDisplay(courseId) {
-        if (!auth?.user?._id) return false; 
+        if (!auth?.user?._id) return false;
         const response = await checkCoursePurchaseInfoService(
-          courseId,
-          auth.user._id
+            courseId,
+            auth.user._id
         );
         if (response?.success) {
-          return response?.data; 
+            return response?.data;
         }
         return false;
-      }
-    
-      async function fetchPurchaseStatuses() {
-        if (studentViewCoursesList?.length > 0) {
-          const statuses = {};
-          for (const course of studentViewCoursesList) {
-            const status = await handleBuyButtonDisplay(course?._id);
-            statuses[course?._id] = status;
-          }
-          setPurchaseStatus(statuses);
-        }
-      }
+    }
 
+    // Hàm lấy trạng thái mua hàng cho tất cả các khóa học hiển thị
+    async function fetchPurchaseStatuses() {
+        if (studentViewCoursesList?.length > 0) {
+            const statuses = {};
+            for (const course of studentViewCoursesList) {
+                const status = await handleBuyButtonDisplay(course?._id);
+                statuses[course?._id] = status;
+            }
+            setPurchaseStatus(statuses);
+        }
+    }
+
+    // Xử lý thay đổi giá trị trong input tìm kiếm và thiết lập trễ để giảm số lần gọi API
     function handleSearchInputChange(event) {
         const value = event.target.value;
         setSearchInput(value);
@@ -150,11 +159,13 @@ function StudentViewCoursesPage() {
     }
 
 
+    // Sử dụng useEffect để quản lý việc cập nhật các tham số URL khi bộ lọc hoặc tìm kiếm thay đổi
     useEffect(() => {
         const buildQueryStringForFilters = createSearchParamsHelper(filters, searchQuery);
         setSearchParams(new URLSearchParams(buildQueryStringForFilters));
     }, [filters, searchQuery]);
 
+    // Sử dụng useEffect để khôi phục trạng thái bộ lọc từ sessionStorage khi component được mount
     useEffect(() => {
         setSort("price-lowtohigh");
         setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
@@ -162,17 +173,20 @@ function StudentViewCoursesPage() {
         setSearchInput(searchParams.get("search") || "");
     }, []);
 
+    // Sử dụng useEffect để gọi API lấy danh sách khóa học khi các tham số bộ lọc hoặc tìm kiếm thay đổi
     useEffect(() => {
         if (filters !== null && sort !== null)
             fetchAllStudentViewCourses(filters, sort, searchQuery);
     }, [filters, sort, searchQuery]);
 
+    // Sử dụng useEffect để xóa bộ lọc trong sessionStorage khi component bị unmount
     useEffect(() => {
         return () => {
             sessionStorage.removeItem("filters");
         };
     }, []);
 
+    // Sử dụng useEffect để cập nhật trạng thái mua hàng khi danh sách khóa học thay đổi
     useEffect(() => {
         fetchPurchaseStatuses();
     }, [studentViewCoursesList]);
@@ -180,6 +194,7 @@ function StudentViewCoursesPage() {
 
     console.log(loadingState, "loadingState");
 
+    // Xây dựng giao diện người dùng cho trang danh sách khóa học
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">All Courses</h1>
@@ -214,7 +229,7 @@ function StudentViewCoursesPage() {
                 <main className="flex-1">
                     <div className="flex justify-between items-center mb-4 gap-5">
                         <div className="flex items-center border border-gray-300 rounded-md p-2 ">
-                            <SearchIcon className="h-5 w-5 text-gray-500 mr-2"/>
+                            <SearchIcon className="h-5 w-5 text-gray-500 mr-2" />
                             <input
                                 type="text"
                                 placeholder="Search courses..."
@@ -225,7 +240,7 @@ function StudentViewCoursesPage() {
 
                         </div>
 
-                        
+
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
@@ -253,9 +268,9 @@ function StudentViewCoursesPage() {
                                 </DropdownMenuRadioGroup>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        
+
                     </div>
-                    <div className="text-left"> 
+                    <div className="text-left">
                         <span className="text-[18px] text-black font-semibold">
                             {studentViewCoursesList.length} Results
                         </span>
@@ -287,7 +302,7 @@ function StudentViewCoursesPage() {
                                                         #{courseItem?.category}
                                                     </span>
                                                 )}
-                                            </div>                                        
+                                            </div>
 
                                             <p className="text-left text-sm text-gray-600 mb-1">
                                                 Created By{" "}
@@ -306,11 +321,11 @@ function StudentViewCoursesPage() {
                                             </p> */}
                                             {purchaseStatus[courseItem?._id] ? (
                                                 <Button className="w-full bg-green-500 text-white text-[17px] font-semibold hover:bg-green-600">
-                                                Continue Learning
+                                                    Continue Learning
                                                 </Button>
                                             ) : (
                                                 <Button className="w-full bg-red-500 text-white text-[17px] font-semibold hover:bg-red-600">
-                                                Buy now ${courseItem?.pricing}
+                                                    Buy now ${courseItem?.pricing}
                                                 </Button>
                                             )}
                                         </div>
