@@ -11,6 +11,7 @@ function StudentViewCommonHeader() {
   function handleLogout() {
     resetCredentials();
     sessionStorage.clear();
+    // localStorage.clear();
   }
 
   function handleLogin(params) {

@@ -29,6 +29,7 @@ export const signUpFormControls = [
       placeholder: "Enter your user email",
       type: "email",
       componentType: "input",
+      autoComplete: "email",
     },
     {
       name: "password",

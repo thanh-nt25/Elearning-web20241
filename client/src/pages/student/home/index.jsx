@@ -34,11 +34,11 @@ function StudentHomePage() {
   }
 
   async function handleCourseNavigate(getCurrentCourseId) {
+    // navigate(`/course/details/${getCurrentCourseId}`);
     const response = await checkCoursePurchaseInfoService(
       getCurrentCourseId,
       auth?.user?._id
     );
-    // navigate(`/course/details/${getCurrentCourseId}`);
     if (response?.success) {
       if (response?.data) {
         navigate(`/course-progress/${getCurrentCourseId}`);

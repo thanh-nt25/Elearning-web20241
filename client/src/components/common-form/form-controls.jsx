@@ -29,6 +29,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
                 [getControlItem.name]: event.target.value,
               })
             }
+            autoComplete={getControlItem.autoComplete || "off"}
           />
         );
         break;
@@ -71,6 +72,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
                 [getControlItem.name]: event.target.value,
               })
             }
+            autoComplete={getControlItem.autoComplete || "off"}
           />
         );
         break;
@@ -89,6 +91,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
                 [getControlItem.name]: event.target.value,
               })
             }
+            autoComplete={getControlItem.autoComplete || "off"}
           />
         );
         break;
