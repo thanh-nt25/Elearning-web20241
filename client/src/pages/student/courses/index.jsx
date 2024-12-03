@@ -13,15 +13,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { filterOptions, sortOptions } from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
+
 import {
     checkCoursePurchaseInfoService,
     fetchStudentViewCourseListService,
 } from "@/services";
-import { ArrowUpDownIcon } from "lucide-react";
+import { ArrowUpDownIcon, SearchIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-function createSearchParamsHelper(filterParams) {
+function createSearchParamsHelper(filterParams, searchQuery) {
     const queryParams = [];
 
     for (const [key, value] of Object.entries(filterParams)) {
@@ -30,6 +31,10 @@ function createSearchParamsHelper(filterParams) {
 
             queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
         }
+    }
+
+    if (searchQuery) {
+        queryParams.push(`search=${encodeURIComponent(searchQuery)}`);
     }
 
     return queryParams.join("&");
@@ -45,6 +50,10 @@ function StudentViewCoursesPage() {
         loadingState,
         setLoadingState,
     } = useContext(StudentContext);
+    //search
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchInput, setSearchInput] = useState("");
+    const [searchTimeout, setSearchTimeout] = useState(null);
     const navigate = useNavigate();
     const { auth } = useContext(AuthContext);
 
@@ -75,10 +84,11 @@ function StudentViewCoursesPage() {
         sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
     }
 
-    async function fetchAllStudentViewCourses(filters, sort) {
+    async function fetchAllStudentViewCourses(filters, sort, search) {
         const query = new URLSearchParams({
             ...filters,
             sortBy: sort,
+            search: search || "",
         });
         const response = await fetchStudentViewCourseListService(query);
         if (response?.success) {
@@ -102,26 +112,43 @@ function StudentViewCoursesPage() {
         }
     }
 
+    function handleSearchInputChange(event) {
+        const value = event.target.value;
+        setSearchInput(value);
+
+        if (searchTimeout) clearTimeout(searchTimeout);
+
+        const timeout = setTimeout(() => {
+            setSearchQuery(value);
+        }, 500); // debounce delay 500ms
+
+        setSearchTimeout(timeout);
+    }
+
+
     useEffect(() => {
-        const buildQueryStringForFilters = createSearchParamsHelper(filters);
+        const buildQueryStringForFilters = createSearchParamsHelper(filters, searchQuery);
         setSearchParams(new URLSearchParams(buildQueryStringForFilters));
-    }, [filters]);
+    }, [filters, searchQuery]);
 
     useEffect(() => {
         setSort("price-lowtohigh");
         setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+        setSearchQuery(searchParams.get("search") || "");
+        setSearchInput(searchParams.get("search") || "");
     }, []);
 
     useEffect(() => {
         if (filters !== null && sort !== null)
-            fetchAllStudentViewCourses(filters, sort);
-    }, [filters, sort]);
+            fetchAllStudentViewCourses(filters, sort, searchQuery);
+    }, [filters, sort, searchQuery]);
 
     useEffect(() => {
         return () => {
             sessionStorage.removeItem("filters");
         };
     }, []);
+
 
     console.log(loadingState, "loadingState");
 
@@ -157,7 +184,20 @@ function StudentViewCoursesPage() {
                     </div>
                 </aside>
                 <main className="flex-1">
-                    <div className="flex justify-end items-center mb-4 gap-5">
+                    <div className="flex justify-between items-center mb-4 gap-5">
+                        <div className="flex items-center border border-gray-300 rounded-md p-2 ">
+                            <SearchIcon className="h-5 w-5 text-gray-500 mr-2"/>
+                            <input
+                                type="text"
+                                placeholder="Search courses..."
+                                value={searchInput}
+                                onChange={handleSearchInputChange}
+                                className="flex-1 outline-none"
+                            />
+
+                        </div>
+
+                        
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
@@ -185,7 +225,10 @@ function StudentViewCoursesPage() {
                                 </DropdownMenuRadioGroup>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <span className="text-sm text-black font-bold">
+                        
+                    </div>
+                    <div className="text-left"> 
+                        <span className="text-xl text-black font-bold">
                             {studentViewCoursesList.length} Results
                         </span>
                     </div>
@@ -205,22 +248,32 @@ function StudentViewCoursesPage() {
                                             />
                                         </div>
                                         <div className="flex-1">
-                                            <CardTitle className="text-xl mb-2">
+                                            <CardTitle className="text-left text-xl mb-2">
                                                 {courseItem?.title}
                                             </CardTitle>
-                                            <p className="text-sm text-gray-600 mb-1">
+                                            <div className="flex flex-wrap justify-start gap-2 mb-2">
+                                                {courseItem?.category && (
+                                                    <span
+                                                        className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded"
+                                                    >
+                                                        #{courseItem?.category}
+                                                    </span>
+                                                )}
+                                            </div>                                        
+
+                                            <p className="text-left text-sm text-gray-600 mb-1">
                                                 Created By{" "}
                                                 <span className="font-bold">
                                                     {courseItem?.instructorName}
                                                 </span>
                                             </p>
-                                            <p className="text-[16px] text-gray-600 mt-3 mb-2">
+                                            <p className="text-left text-[16px] text-gray-600 mt-3 mb-2">
                                                 {`${courseItem?.curriculum?.length} ${courseItem?.curriculum?.length <= 1
                                                     ? "Lecture"
                                                     : "Lectures"
                                                     } - ${courseItem?.level.toUpperCase()} Level`}
                                             </p>
-                                            <p className="font-bold text-lg">
+                                            <p className="text-left font-bold text-lg">
                                                 ${courseItem?.pricing}
                                             </p>
                                         </div>

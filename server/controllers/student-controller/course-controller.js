@@ -10,9 +10,8 @@ const getAllStudentViewCourses = async (req, res) => {
       level = [],
       primaryLanguage = [],
       sortBy = "price-lowtohigh",
+      search = "", 
     } = req.query;
-
-    // console.log(req.query, "req.query");
 
     let filters = {};
     if (category.length) {
@@ -25,25 +24,24 @@ const getAllStudentViewCourses = async (req, res) => {
       filters.primaryLanguage = { $in: primaryLanguage.split(",") };
     }
 
+    if (search) {
+      filters.title = { $regex: search, $options: "i" };
+    }
+
     let sortParam = {};
     switch (sortBy) {
       case "price-lowtohigh":
         sortParam.pricing = 1;
-
         break;
       case "price-hightolow":
         sortParam.pricing = -1;
-
         break;
       case "title-atoz":
         sortParam.title = 1;
-
         break;
       case "title-ztoa":
         sortParam.title = -1;
-
         break;
-
       default:
         sortParam.pricing = 1;
         break;
@@ -59,11 +57,10 @@ const getAllStudentViewCourses = async (req, res) => {
     console.log(e);
     res.status(500).json({
       success: false,
-      message: "Some error occured!",
+      message: "Some error occurred!",
     });
   }
 };
-
 const getStudentViewCourseDetails = async (req, res) => {
   console.log("getStudentViewCourseDetails: ", req.query);
   try {

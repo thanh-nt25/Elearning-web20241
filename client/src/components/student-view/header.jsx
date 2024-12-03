@@ -74,8 +74,22 @@ function StudentViewCommonHeader() {
           </Button>
           
           }
+
+          {auth?.authenticate &&
+              <Button 
+              variant="ghost" 
+              onClick={() => 
+                navigate("/account")
+              } 
+              className="text-[14px] md:text-[16px] font-medium"
+            >
+              Account
+            </Button>
+          }
           {auth?.authenticate ? <Button onClick={handleLogout}>Sign Out</Button> :
            <Button onClick={handleLogin}>Sign In</Button> }
+
+           
         </div>
       </div>
     </header>

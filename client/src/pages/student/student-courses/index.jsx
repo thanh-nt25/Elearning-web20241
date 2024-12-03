@@ -56,7 +56,7 @@ function StudentCoursesPage() {
             </Card>
           ))
         ) : (
-          <h1 className="text-3xl font-bold">No Courses found</h1>
+          <h3 className="text-xl">You have not registered for any course.</h3>
         )}
       </div>
     </div>

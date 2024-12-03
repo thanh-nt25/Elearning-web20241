@@ -9,6 +9,7 @@ import StudentViewCommonLayout from "./components/student-view/common-layout";
 import StudentLandingPage from "./pages/student/landing";
 import StudentHomePage from "./pages/student/home";
 import AboutPage from "./pages/student/about";
+import AccountStudent from "./pages/student/account";
 import NotFoundPage from "./pages/not-found";
 import StudentViewCoursesPage from "./pages/student/courses";
 import StudentViewCourseDetailsPage from "./pages/student/course-details";
@@ -80,8 +81,9 @@ function App() {
         <Route path="" element={<StudentLandingPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="home" element={<StudentHomePage />} />
-         <Route path="courses" element={<StudentViewCoursesPage />} />
-         
+        <Route path="courses" element={<StudentViewCoursesPage />} />
+        
+        <Route path="account" element={<AccountStudent />} />
         <Route
           path="course/details/:id"
           element={<StudentViewCourseDetailsPage />}
