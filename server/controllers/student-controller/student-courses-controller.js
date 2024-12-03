@@ -7,6 +7,13 @@ const getCoursesByStudentId = async (req, res) => {
       userId: studentId,
     });
 
+    if (!studentBoughtCourses) {
+      return res.status(200).json({
+        success: true,
+        data: [],
+      });
+    }
+
     res.status(200).json({
       success: true,
       data: studentBoughtCourses.courses,
