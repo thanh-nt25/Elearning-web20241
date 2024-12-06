@@ -15,6 +15,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { deleteUserByIdService, fetchAdminUserListService } from "@/services";
+import { toast } from "react-toastify";
 
 function AdminUsers({ listOfUsers }) {
   const navigate = useNavigate();
@@ -80,8 +82,26 @@ function AdminUsers({ listOfUsers }) {
     </div>
   );
 
-  // console.log("User by Id", listOfUsers.filter((userid) => _id === userid));
   
+  const handleDeleteUser = async (userId) => {
+    console.log("Xoa user", userId?.userName);
+    
+    try {
+      const confirmation = window.confirm("Are you sure you want to delete this user?");
+      if (!confirmation) {
+        return;
+      }
+  
+      await deleteUserByIdService(userId);
+  
+      fetchAdminUserListService();
+      // toast.success("User deleted successfully!");
+    } catch (error) {
+      console.error("Delete user failed:", error);
+      // toast.error("Failed to delete user. Please try again.");
+    }
+  };
+
   const handleEditUser = (userId) => {
     navigate(`/admin/edit-user/${userId}`, {
       state: {
@@ -160,6 +180,7 @@ function AdminUsers({ listOfUsers }) {
                           <Edit className="h-6 w-6" />
                         </Button>
                         <Button
+                          onClick={()=> handleDeleteUser(user?._id)}
                           variant="ghost"
                           size="sm"
                           className="text-red-600 hover:text-red-800"
@@ -179,6 +200,7 @@ function AdminUsers({ listOfUsers }) {
                           <Edit className="h-6 w-6" />
                         </Button>
                         <Button
+                          onClick={()=> handleDeleteUser(user?._id)}
                           variant="ghost"
                           size="sm"
                           className="text-red-600 hover:text-red-800"
@@ -207,6 +229,7 @@ function AdminUsers({ listOfUsers }) {
                         </Button>
                         <Button
                           variant="ghost"
+                          onClick={()=> handleDeleteUser(user?._id)}
                           size="sm"
                           className="text-red-600 hover:text-red-800"
                         >

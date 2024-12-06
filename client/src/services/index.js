@@ -279,6 +279,26 @@ export async function updateUserByIdService(userId, userFormData) {
   }
 }
 
+export async function deleteUserByIdService(userId) {
+  try {
+    const { data } = await axiosInstance.delete(`/admin/user/delete/${userId}`);
+
+    if (data?.success) {
+      toast.success(data.message || "User deleted successfully!");
+    } else {
+      toast.error(data.message || "Failed to delete user!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred!"
+    );
+    throw error; 
+  }
+}
+
 //het admin
 
 export async function mediaBulkUploadService(formData, onProgressCallback) {
