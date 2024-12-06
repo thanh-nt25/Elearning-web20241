@@ -41,30 +41,19 @@ function StudentViewCourseDetailsPage() {
     const { id } = useParams();
     const location = useLocation();
 
-    async function fetchStudentViewCourseDetails() {
-        // const checkCoursePurchaseInfoResponse =
-        //   await checkCoursePurchaseInfoService(
-        //     currentCourseDetailsId,
-        //     auth?.user._id
-        //   );
-
-        // if (
-        //   checkCoursePurchaseInfoResponse?.success &&
-        //   checkCoursePurchaseInfoResponse?.data
-        // ) {
-        //   navigate(`/course-progress/${currentCourseDetailsId}`);
-        //   return;
-        // }
-
-        const response = await fetchStudentViewCourseDetailsService(
-            currentCourseDetailsId
-        );
-
-        if (response?.success) {
-            setStudentViewCourseDetails(response?.data);
-            setLoadingState(false);
-        } else {
+    async function fetchStudentViewCourseDetails(courseId) {
+        try {
+            const response = await fetchStudentViewCourseDetailsService(courseId);
+    
+            if (response?.success) {
+                setStudentViewCourseDetails(response?.data);
+            } else {
+                setStudentViewCourseDetails(null);
+            }
+        } catch (error) {
+            console.error('Error fetching course details:', error);
             setStudentViewCourseDetails(null);
+        } finally {
             setLoadingState(false);
         }
     }
@@ -114,14 +103,25 @@ function StudentViewCourseDetailsPage() {
     }, [currentCourseDetailsId]);
 
     useEffect(() => {
-        if (id) setCurrentCourseDetailsId(id);
+        if (id) {
+            console.log('Fetching details for course id:', id); 
+            setLoadingState(true);
+            setStudentViewCourseDetails(null); 
+            fetchStudentViewCourseDetails(id);
+        }
     }, [id]);
 
+    // useEffect(() => {
+    //     if (!location.pathname.includes("course/details"))
+    //         setStudentViewCourseDetails(null),
+    //             setCurrentCourseDetailsId(null),
+    //             setCoursePurchaseId(null);
+    // }, [location.pathname]);
     useEffect(() => {
-        if (!location.pathname.includes("course/details"))
-            setStudentViewCourseDetails(null),
-                setCurrentCourseDetailsId(null),
-                setCoursePurchaseId(null);
+        if (!location.pathname.includes("course/details")) {
+            setStudentViewCourseDetails(null);
+            // Removed setCoursePurchaseId(null);
+        }
     }, [location.pathname]);
 
     if (loadingState) return <Skeleton />;
@@ -189,28 +189,24 @@ function StudentViewCourseDetailsPage() {
                             <CardTitle>Course Curriculum</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {studentViewCourseDetails?.curriculum?.map(
-                                (curriculumItem, index) => (
-                                    <li
-                                        className={`${curriculumItem?.freePreview
-                                                ? "cursor-pointer"
-                                                : "cursor-not-allowed"
-                                            } flex items-center mb-4`}
-                                        onClick={
-                                            curriculumItem?.freePreview
-                                                ? () => handleSetFreePreview(curriculumItem)
-                                                : null
-                                        }
-                                    >
-                                        {curriculumItem?.freePreview ? (
-                                            <PlayCircle className="mr-2 h-4 w-4" />
-                                        ) : (
-                                            <Lock className="mr-2 h-4 w-4" />
-                                        )}
-                                        <span>{curriculumItem?.title}</span>
-                                    </li>
-                                )
-                            )}
+                            {studentViewCourseDetails?.curriculum?.map((curriculumItem, index) => (
+                                <li
+                                    key={index} 
+                                    className={`${curriculumItem?.freePreview ? "cursor-pointer" : "cursor-not-allowed"} flex items-center mb-4`}
+                                    onClick={
+                                        curriculumItem?.freePreview
+                                            ? () => handleSetFreePreview(curriculumItem)
+                                            : null
+                                    }
+                                >
+                                    {curriculumItem?.freePreview ? (
+                                        <PlayCircle className="mr-2 h-4 w-4" />
+                                    ) : (
+                                        <Lock className="mr-2 h-4 w-4" />
+                                    )}
+                                    <span>{curriculumItem?.title}</span>
+                                </li>
+                            ))}
                         </CardContent>
                     </Card>
                 </main>
