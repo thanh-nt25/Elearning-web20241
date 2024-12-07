@@ -11,7 +11,7 @@ const studentCoursesRoutes = require("./routes/student-routes/student-courses-ro
 const studentCourseProgressRoutes = require("./routes/student-routes/course-progress-routes");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 
 app.use(
@@ -25,7 +25,7 @@ app.use(
 app.use(express.json());
 
 mongoose
-  .connect(MONGO_URI || 'mongodb+srv://tuanthanh:123456abc@cluster0.lxz5n.mongodb.net/')
+  .connect(MONGO_URI)
   .then(() => console.log("mongodb is connected"))
   .catch((e) => console.log(e));
 
