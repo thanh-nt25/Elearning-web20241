@@ -103,8 +103,8 @@ function FormControls({ formControls = [], formData, setFormData }) {
   return (
     <div className="flex flex-col gap-3">
       {formControls.map((controleItem) => (
-        <div key={controleItem.name}>
-          <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
+        <div className="text-left" key={controleItem.name}>
+          <Label  htmlFor={controleItem.name}>{controleItem.label}</Label>
           {renderComponentByType(controleItem)}
         </div>
       ))}

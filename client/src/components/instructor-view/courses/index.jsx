@@ -64,18 +64,23 @@ function InstructorCourses({ listOfCourses }) {
                         ${course?.students?.length * course?.pricing}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          onClick={() => {
-                            navigate(`/instructor/edit-course/${course?._id}`);
-                          }}
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Edit className="h-6 w-6" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Delete className="h-6 w-6" />
-                        </Button>
+                        {
+                          course?.students?.length == 0 ? 
+                          <>
+                            <Button
+                              onClick={() => {
+                                navigate(`/instructor/edit-course/${course?._id}`);
+                              }}
+                              variant="ghost"
+                              size="sm"
+                            >
+                              <Edit className="h-6 w-6" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Delete className="h-6 w-6" />
+                            </Button>
+                          </> : <span className="text-gray-500">Course is currently active</span>
+                        }
                       </TableCell>
                     </TableRow>
                   ))

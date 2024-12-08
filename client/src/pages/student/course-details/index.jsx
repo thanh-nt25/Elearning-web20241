@@ -163,10 +163,10 @@ function StudentViewCourseDetailsPage() {
                 <main className="flex-grow">
                     <Card className="mb-8">
                         <CardHeader>
-                            <CardTitle>What you'll learn</CardTitle>
+                            <CardTitle className="text-left">What you'll learn</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <ul className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 {studentViewCourseDetails?.objectives
                                     .split(",")
                                     .map((objective, index) => (
@@ -180,13 +180,13 @@ function StudentViewCourseDetailsPage() {
                     </Card>
                     <Card className="mb-8">
                         <CardHeader>
-                            <CardTitle>Course Description</CardTitle>
+                            <CardTitle className="text-left">Course Description</CardTitle>
                         </CardHeader>
-                        <CardContent>{studentViewCourseDetails?.description}</CardContent>
+                        <CardContent className="text-left">{studentViewCourseDetails?.description}</CardContent>
                     </Card>
                     <Card className="mb-8">
                         <CardHeader>
-                            <CardTitle>Course Curriculum</CardTitle>
+                            <CardTitle className="text-left">Course Curriculum</CardTitle>
                         </CardHeader>
                         <CardContent>
                             {studentViewCourseDetails?.curriculum?.map((curriculumItem, index) => (

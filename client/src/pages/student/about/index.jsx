@@ -11,10 +11,10 @@ function AboutPage() {
       <section className="py-16 px-6 bg-gradient-to-r from-green-400 to-teal-500 text-white text-center">
         <h1 className="text-4xl font-bold mb-4">About Us</h1>
         <p className="text-lg mb-6">
-          Learn more about our mission, values, and how we're revolutionizing online learning!
+          Learn more about our mission, values, and how we are revolutionizing online learning!
         </p>
         <Button
-          onClick={() => window.location.href = '/contact'}
+          onClick={()=> {}}
           className="bg-yellow-400 text-black py-2 px-6 rounded-full shadow-md hover:bg-yellow-500 transition duration-300"
         >
           Contact Us
