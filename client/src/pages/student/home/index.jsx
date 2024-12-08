@@ -1,7 +1,7 @@
 import { courseCategories } from "@/config";
 import banner from "../../../assets/banner-img.png";
 import { Button } from "@/components/ui/button";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StudentContext } from "@/context/student-context";
 import {
   checkCoursePurchaseInfoService,
@@ -15,6 +15,8 @@ function StudentHomePage() {
     useContext(StudentContext);
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [purchaseStatus, setPurchaseStatus] = useState({});
 
   function handleNavigateToCoursesPage(getCurrentId) {
     console.log(getCurrentId);
@@ -31,6 +33,29 @@ function StudentHomePage() {
   async function fetchAllStudentViewCourses() {
     const response = await fetchStudentViewCourseListService();
     if (response?.success) setStudentViewCoursesList(response?.data);
+  }
+
+  async function handleBuyButtonDisplay(courseId) {
+    if (!auth?.user?._id) return false; 
+    const response = await checkCoursePurchaseInfoService(
+      courseId,
+      auth.user._id
+    );
+    if (response?.success) {
+      return response?.data; 
+    }
+    return false;
+  }
+
+  async function fetchPurchaseStatuses() {
+    if (studentViewCoursesList?.length > 0) {
+      const statuses = {};
+      for (const course of studentViewCoursesList) {
+        const status = await handleBuyButtonDisplay(course?._id);
+        statuses[course?._id] = status;
+      }
+      setPurchaseStatus(statuses);
+    }
   }
 
   async function handleCourseNavigate(getCurrentCourseId) {
@@ -51,6 +76,10 @@ function StudentHomePage() {
   useEffect(() => {
     fetchAllStudentViewCourses();
   }, []);
+
+  useEffect(() => {
+    fetchPurchaseStatuses();
+  }, [studentViewCoursesList]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -101,13 +130,25 @@ function StudentHomePage() {
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-bold mb-2">{courseItem?.title}</h3>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <h3 className="text-left text-[20px] font-bold mb-2">{courseItem?.title}</h3>
+                  <p className="text-left text-sm text-gray-700 mb-2">
                     {courseItem?.instructorName}
                   </p>
-                  <p className="font-bold text-[16px]">
-                    ${courseItem?.pricing}
+                  <p className="font-semibold text-[15px] text-left pt-4 pb-2">
+                    {courseItem?.level
+                      ? courseItem.level.charAt(0).toUpperCase() + courseItem.level.slice(1)
+                      : ""}
                   </p>
+                  {purchaseStatus[courseItem?._id] ? (
+                    <Button className="w-full bg-green-500 text-white text-[17px] font-semibold hover:bg-green-600">
+                      Continue Learning
+                    </Button>
+                  ) : (
+                    <Button className="w-full bg-red-500 text-white text-[17px] font-semibold hover:bg-red-600">
+                      Buy now ${courseItem?.pricing}
+                    </Button>
+                  )}
+                  
                 </div>
               </div>
             ))

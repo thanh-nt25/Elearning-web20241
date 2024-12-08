@@ -43,6 +43,7 @@ function createSearchParamsHelper(filterParams, searchQuery) {
 function StudentViewCoursesPage() {
     const [sort, setSort] = useState("price-lowtohigh");
     const [filters, setFilters] = useState({});
+    const [purchaseStatus, setPurchaseStatus] = useState({});
     const [searchParams, setSearchParams] = useSearchParams();
     const {
         studentViewCoursesList,
@@ -112,6 +113,29 @@ function StudentViewCoursesPage() {
         }
     }
 
+    async function handleBuyButtonDisplay(courseId) {
+        if (!auth?.user?._id) return false; 
+        const response = await checkCoursePurchaseInfoService(
+          courseId,
+          auth.user._id
+        );
+        if (response?.success) {
+          return response?.data; 
+        }
+        return false;
+      }
+    
+      async function fetchPurchaseStatuses() {
+        if (studentViewCoursesList?.length > 0) {
+          const statuses = {};
+          for (const course of studentViewCoursesList) {
+            const status = await handleBuyButtonDisplay(course?._id);
+            statuses[course?._id] = status;
+          }
+          setPurchaseStatus(statuses);
+        }
+      }
+
     function handleSearchInputChange(event) {
         const value = event.target.value;
         setSearchInput(value);
@@ -148,6 +172,10 @@ function StudentViewCoursesPage() {
             sessionStorage.removeItem("filters");
         };
     }, []);
+
+    useEffect(() => {
+        fetchPurchaseStatuses();
+    }, [studentViewCoursesList]);
 
 
     console.log(loadingState, "loadingState");
@@ -228,7 +256,7 @@ function StudentViewCoursesPage() {
                         
                     </div>
                     <div className="text-left"> 
-                        <span className="text-xl text-black font-bold">
+                        <span className="text-[18px] text-black font-semibold">
                             {studentViewCoursesList.length} Results
                         </span>
                     </div>
@@ -273,9 +301,18 @@ function StudentViewCoursesPage() {
                                                     : "Lectures"
                                                     } - ${courseItem?.level.toUpperCase()} Level`}
                                             </p>
-                                            <p className="text-left font-bold text-lg">
+                                            {/* <p className="text-left font-bold text-lg">
                                                 ${courseItem?.pricing}
-                                            </p>
+                                            </p> */}
+                                            {purchaseStatus[courseItem?._id] ? (
+                                                <Button className="w-full bg-green-500 text-white text-[17px] font-semibold hover:bg-green-600">
+                                                Continue Learning
+                                                </Button>
+                                            ) : (
+                                                <Button className="w-full bg-red-500 text-white text-[17px] font-semibold hover:bg-red-600">
+                                                Buy now ${courseItem?.pricing}
+                                                </Button>
+                                            )}
                                         </div>
                                     </CardContent>
                                 </Card>

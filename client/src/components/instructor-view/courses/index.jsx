@@ -28,7 +28,7 @@ function InstructorCourses({ listOfCourses }) {
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
-        <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
+        <CardTitle className="text-3xl font-bold">All Courses</CardTitle>
         <Button
           onClick={() => {
             setCurrentEditedCourseId(null);
