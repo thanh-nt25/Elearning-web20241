@@ -23,18 +23,37 @@ const addNewCourse = async (req, res) => {
 };
 
 const getAllCourses = async (req, res) => {
+  const { instructorId } = req.query; 
+  console.log("instructorId", instructorId);
+  
   try {
-    const coursesList = await Course.find({});
+    if (!instructorId) {
+      return res.status(400).json({
+        success: false,
+        message: "Instructor ID is required",
+      });
+    }
+
+    
+    const coursesList = await Course.find({ instructorId });
+
+    if (!coursesList || coursesList.length === 0) {
+      return res.status(200).json({
+        success: true,
+        data: [],
+        message: "No courses found for this instructor",
+      });
+    }
 
     res.status(200).json({
       success: true,
       data: coursesList,
     });
   } catch (e) {
-    console.log(e);
+    console.error(e);
     res.status(500).json({
       success: false,
-      message: "Some error occured!",
+      message: "Some error occurred!",
     });
   }
 };

@@ -40,8 +40,11 @@ export async function mediaDeleteService(id) {
   return data;
 }
 
-export async function fetchInstructorCourseListService() {
-  const { data } = await axiosInstance.get(`/instructor/course/get`);
+// instructor
+export async function fetchInstructorCourseListService(instructorId) {
+  const { data } = await axiosInstance.get(`/instructor/course/get`,{
+    params: { instructorId }, 
+  });
 
   return data;
 }
@@ -68,6 +71,7 @@ export async function updateCourseByIdService(id, formData) {
 
   return data;
 }
+// instructor
 
 export async function mediaBulkUploadService(formData, onProgressCallback) {
   const { data } = await axiosInstance.post("/media/bulk-upload", formData, {
