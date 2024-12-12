@@ -19,6 +19,8 @@ function AdminDashboardpage() {
   const { adminUsersList, setAdminUsersList } =
     useContext(AdminContext);
 
+  
+
   async function fetchAllCourses() {
     const response = await fetchAdminCourseListService();
     
@@ -35,7 +37,7 @@ function AdminDashboardpage() {
       setAdminUsersList(response?.data);
     };
   }
-
+  
   useEffect(() => {
     fetchAllCourses();
     fetchAllUsers();

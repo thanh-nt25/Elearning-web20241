@@ -19,6 +19,8 @@ import StudentViewCourseDetailsPage from "./pages/student/course-details";
 import PaypalPaymentReturnPage from "./pages/student/payment-return";
 import StudentCoursesPage from "./pages/student/student-courses";
 import StudentViewCourseProgressPage from "./pages/student/course-progress";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import './App.css'
 
 function App() {
@@ -26,7 +28,19 @@ function App() {
   const { auth } = useContext(AuthContext);
 
   return (
-    <Routes>
+    <div>
+      <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      <Routes>
       <Route
         path="/auth"
         element={
@@ -95,7 +109,7 @@ function App() {
         path="/admin/edit-course/:courseId"
         element={
           <RouteGuard
-            element={<AddNewCoursePage />}
+            element={<AdminAddNewCoursePage />}
             authenticated={auth?.authenticate}
             user={auth?.user}
           />
@@ -156,7 +170,7 @@ function App() {
       <Route path="*" element={<NotFoundPage />} />
     </ Routes>
 
-
+  </div>
   )
 }
 

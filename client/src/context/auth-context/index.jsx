@@ -18,20 +18,7 @@ export default function AuthProvider({ children }) {
 
   async function handleRegisterUser(event) {
     event.preventDefault();
-    try {
-      const data = await registerService(signUpFormData);
-  
-      if (data.success) {
-        toast.success("Registration successful! Welcome aboard! 🎉");
-        setSignUpFormData({ userName: "", userEmail: "", password: "" });
-        // navigate("/login");
-      } else {
-        toast.error(data.message || "Registration failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error during registration:", error.message);
-      toast.error("Something went wrong. Please try again later.");
-    }
+    const data = await registerService(signUpFormData);
   }
 
   async function handleLoginUser(event) {

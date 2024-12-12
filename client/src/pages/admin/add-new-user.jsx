@@ -135,36 +135,39 @@ function AddNewUserPage() {
               />
             </div>
             {/* password */}
-            <div>
-                <label
-                    className="text-left block text-sm font-bold mb-2"
-                    htmlFor="password"
-                >
-                    Password
-                </label>
-                <div className="relative">
-                    <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    className="w-full border rounded px-4 py-2"
-                    value={userFormData.password}
-                    onChange={(e) =>
+            {
+              !isEditPage &&
+              <div>
+                  <label
+                      className="text-left block text-sm font-bold mb-2"
+                      htmlFor="password"
+                      >
+                      Password
+                  </label>
+                  <div className="relative">
+                      <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      className="w-full border rounded px-4 py-2"
+                      value={userFormData.password}
+                      onChange={(e) =>
                         setUserFormData({ ...userFormData, password: e.target.value })
-                    }
-                    />
-                    <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
-                    >
-                    {showPassword ? (
+                      }
+                      />
+                      <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+                      >
+                      {showPassword ? (
                         <EyeOff className="h-5 w-5" />
-                    ) : (
+                      ) : (
                         <Eye className="h-5 w-5" />
-                    )}
-                    </button>
-                </div>
-            </div>
+                      )}
+                      </button>
+                  </div>
+              </div>
+            }
 
             {/* role */}
             <div>

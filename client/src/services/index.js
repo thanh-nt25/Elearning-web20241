@@ -1,18 +1,57 @@
 import axiosInstance from "@/api/axiosInstance";
+// import { handleApiResponse } from "@/utils/toastWrapper";
+import { toast } from "react-toastify";
+
+
+// export async function registerService(formData) {
+//   const { data } = await axiosInstance.post("/auth/register", {
+//     ...formData,
+//     role: "user",
+//   });
+
+//   return data;
+// }
 
 export async function registerService(formData) {
-  const { data } = await axiosInstance.post("/auth/register", {
-    ...formData,
-    role: "user",
-  });
+  try {
+    const { data } = await axiosInstance.post("/auth/register", {
+      ...formData,
+      role: "user",
+    });
 
-  return data;
+    if (data?.success) {
+      toast.success(data.message || "Registration successful!");
+    } else {
+      toast.error(data.message || "Registration failed!");
+    }
+
+    return data; 
+  } catch (error) {
+    console.error("Registration Error:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred during registration!"
+    );
+    throw error; 
+  }
 }
 
 export async function loginService(formData) {
-  const { data } = await axiosInstance.post("/auth/login", formData);
+  try {
+    const { data } = await axiosInstance.post("/auth/login", formData);
 
-  return data;
+    if (data?.success) {
+      toast.success(data.message || "Login successful!");
+      console.log("Toast called successfully");
+    } else {
+      toast.error(data.message || "Login failed!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Login Error:", error);
+    toast.error(error.response?.data?.message || "An unexpected error occurred!");
+    throw error; 
+  }
 }
 
 export async function checkAuthService() {
@@ -49,12 +88,6 @@ export async function fetchInstructorCourseListService(instructorId) {
   return data;
 }
 
-export async function addNewCourseService(formData) {
-  const { data } = await axiosInstance.post(`/instructor/course/add`, formData);
-
-  return data;
-}
-
 export async function fetchInstructorCourseDetailsService(id) {
   const { data } = await axiosInstance.get(
     `/instructor/course/get/details/${id}`
@@ -63,44 +96,68 @@ export async function fetchInstructorCourseDetailsService(id) {
   return data;
 }
 
-export async function updateCourseByIdService(id, formData) {
-  const { data } = await axiosInstance.put(
-    `/instructor/course/update/${id}`,
-    formData
-  );
+// export async function addNewCourseService(formData) {
+//   const { data } = await axiosInstance.post(`/instructor/course/add`, formData);
 
-  return data;
+//   return data;
+// }
+
+export async function addNewCourseService(formData) {
+  try {
+    const { data } = await axiosInstance.post(`/instructor/course/add`, formData);
+
+    if (data?.success) {
+      toast.success(data.message || "Course added successfully!");
+    } else {
+      toast.error(data.message || "Failed to add course!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error adding course:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred while adding the course!"
+    );
+    throw error;
+  }
 }
-// instructor
+
+// export async function updateCourseByIdService(id, formData) {
+//   const { data } = await axiosInstance.put(
+//     `/instructor/course/update/${id}`,
+//     formData
+//   );
+
+//   return data;
+// }
+
+export async function updateCourseByIdService(id, formData) {
+  try {
+    const { data } = await axiosInstance.put(
+      `/instructor/course/update/${id}`,
+      formData
+    );
+
+    if (data?.success) {
+      toast.success(data.message || "Course updated successfully!");
+    } else {
+      toast.error(data.message || "Failed to update course!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error updating course:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred while updating the course!"
+    );
+    throw error;
+  }
+}
+// het instructor
 
 //admin
-// addNewUserService, , updateUserByIdService
 export async function fetchAdminCourseListService() {
   const { data } = await axiosInstance.get(`/admin/course/get`);
-
-  return data;
-}
-
-export async function updateUserByIdService(userId, userFormData){
-  const { data } = await axiosInstance.put(
-    `/admin/user/update/${userId}`,
-    userFormData
-  );
-
-  return data;
-}
-
-export async function addNewUserService(userFormData){
-  const { data } = await axiosInstance.post(`/admin/user/add`, userFormData);
-
-  return data;
-
-}
-
-export async function fetchUserDetailsService(userId){
-  const { data } = await axiosInstance.get(
-    `/admin/user/get/details/${userId}`
-  );
 
   return data;
 }
@@ -112,13 +169,8 @@ export async function fetchAdminCourseDetailsService(id) {
 
   return data;
 }
-export async function fetchAdminUserListService() {
-  const { data } = await axiosInstance.get(`/admin/user/get`);
 
-  return data;
-}
-
-// export async function updateCourseByIdService(id, formData) {
+// export async function updateAdminCourseByIdService(id, formData) {
 //   const { data } = await axiosInstance.put(
 //     `/admin/course/update/${id}`,
 //     formData
@@ -126,9 +178,108 @@ export async function fetchAdminUserListService() {
 
 //   return data;
 // }
+export async function updateAdminCourseByIdService(id, formData) {
+  try {
+    const { data } = await axiosInstance.put(
+      `/admin/course/update/${id}`,
+      formData
+    );
+
+    if (data?.success) {
+      toast.success(data.message || "Course updated successfully!");
+    } else {
+      toast.error(data.message || "Failed to update course!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error updating course:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred!"
+    );
+    throw error; 
+  }
+}
 
 
-//admin
+// user
+
+// export async function addNewUserService(userFormData){
+//   const { data } = await axiosInstance.post(`/admin/user/add`, userFormData);
+
+//   return data;
+
+// }
+
+export async function addNewUserService(userFormData) {
+  try {
+    const { data } = await axiosInstance.post(
+      `/admin/user/add`,
+      userFormData
+    );
+
+    if (data?.success) {
+      toast.success(data.message || "User added successfully!");
+    } else {
+      toast.error(data.message || "Failed to add user!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error adding user:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred!"
+    );
+    throw error; 
+  }
+}
+
+export async function fetchUserDetailsService(userId){
+  const { data } = await axiosInstance.get(
+    `/admin/user/get/details/${userId}`
+  );
+
+  return data;
+}
+
+export async function fetchAdminUserListService() {
+  const { data } = await axiosInstance.get(`/admin/user/get`);
+
+  return data;
+}
+
+// export async function updateUserByIdService(userId, userFormData){
+//   const { data } = await axiosInstance.put(
+//     `/admin/user/update/${userId}`,
+//     userFormData
+//   );
+
+//   return data;
+// }
+export async function updateUserByIdService(userId, userFormData) {
+  try {
+    const { data } = await axiosInstance.put(
+      `/admin/user/update/${userId}`,
+      userFormData
+    );
+
+    if (data?.success) {
+      toast.success(data.message || "User updated successfully!");
+    } else {
+      toast.error(data.message || "Failed to update user!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred!"
+    );
+    throw error;
+  }
+}
+
+//het admin
 
 export async function mediaBulkUploadService(formData, onProgressCallback) {
   const { data } = await axiosInstance.post("/media/bulk-upload", formData, {
@@ -165,24 +316,68 @@ export async function checkCoursePurchaseInfoService(courseId, studentId) {
   return data;
 }
 
-export async function createPaymentService(formData) {
-  const { data } = await axiosInstance.post(`/student/order/create`, formData);
+// export async function createPaymentService(formData) {
+//   const { data } = await axiosInstance.post(`/student/order/create`, formData);
 
-  return data;
+//   return data;
+// }
+
+export async function createPaymentService(formData) {
+  try {
+    const { data } = await axiosInstance.post(`/student/order/create`, formData);
+
+    if (data?.success) {
+      toast.success(data.message || "Payment created successfully!");
+    } else {
+      toast.error(data.message || "Failed to create payment!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error creating payment:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred while creating the payment!"
+    );
+    throw error;
+  }
 }
 
-export async function captureAndFinalizePaymentService(
-  paymentId,
-  payerId,
-  orderId
-) {
-  const { data } = await axiosInstance.post(`/student/order/capture`, {
-    paymentId,
-    payerId,
-    orderId,
-  });
+// export async function captureAndFinalizePaymentService(
+//   paymentId,
+//   payerId,
+//   orderId
+// ) {
+//   const { data } = await axiosInstance.post(`/student/order/capture`, {
+//     paymentId,
+//     payerId,
+//     orderId,
+//   });
 
-  return data;
+//   return data;
+// }
+
+export async function captureAndFinalizePaymentService(paymentId, payerId, orderId) {
+  try {
+    const { data } = await axiosInstance.post(`/student/order/capture`, {
+      paymentId,
+      payerId,
+      orderId,
+    });
+
+    if (data?.success) {
+      toast.success(data.message || "Payment finalized successfully!");
+    } else {
+      toast.error(data.message || "Failed to finalize payment!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error finalizing payment:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred while finalizing the payment!"
+    );
+    throw error;
+  }
 }
 
 export async function fetchStudentBoughtCoursesService(studentId) {
@@ -201,27 +396,80 @@ export async function getCurrentCourseProgressService(userId, courseId) {
   return data;
 }
 
-export async function markLectureAsViewedService(userId, courseId, lectureId) {
-  const { data } = await axiosInstance.post(
-    `/student/course-progress/mark-lecture-viewed`,
-    {
-      userId,
-      courseId,
-      lectureId,
-    }
-  );
+// export async function markLectureAsViewedService(userId, courseId, lectureId) {
+//   const { data } = await axiosInstance.post(
+//     `/student/course-progress/mark-lecture-viewed`,
+//     {
+//       userId,
+//       courseId,
+//       lectureId,
+//     }
+//   );
 
-  return data;
+//   return data;
+// }
+
+export async function markLectureAsViewedService(userId, courseId, lectureId) {
+  try {
+    const { data } = await axiosInstance.post(
+      `/student/course-progress/mark-lecture-viewed`,
+      {
+        userId,
+        courseId,
+        lectureId,
+      }
+    );
+
+    if (data?.success) {
+      toast.success(data.message || "Lecture marked as viewed!");
+    } else {
+      toast.error(data.message || "Failed to mark lecture as viewed!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error marking lecture as viewed:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred while marking the lecture!"
+    );
+    throw error;
+  }
 }
 
-export async function resetCourseProgressService(userId, courseId) {
-  const { data } = await axiosInstance.post(
-    `/student/course-progress/reset-progress`,
-    {
-      userId,
-      courseId,
-    }
-  );
+// export async function resetCourseProgressService(userId, courseId) {
+//   const { data } = await axiosInstance.post(
+//     `/student/course-progress/reset-progress`,
+//     {
+//       userId,
+//       courseId,
+//     }
+//   );
 
-  return data;
+//   return data;
+// }
+
+export async function resetCourseProgressService(userId, courseId) {
+  try {
+    const { data } = await axiosInstance.post(
+      `/student/course-progress/reset-progress`,
+      {
+        userId,
+        courseId,
+      }
+    );
+
+    if (data?.success) {
+      toast.success(data.message || "Course progress reset successfully!");
+    } else {
+      toast.error(data.message || "Failed to reset course progress!");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error resetting course progress:", error);
+    toast.error(
+      error.response?.data?.message || "An unexpected error occurred while resetting the course progress!"
+    );
+    throw error;
+  }
 }

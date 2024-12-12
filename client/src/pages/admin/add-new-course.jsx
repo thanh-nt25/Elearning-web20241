@@ -11,9 +11,9 @@ import {
 import { AuthContext } from "@/context/auth-context";
 import { AdminContext } from "@/context/admin-context";
 import {
-  addNewCourseService,
+  
   fetchAdminCourseDetailsService,
-  updateCourseByIdService,
+  updateAdminCourseByIdService,
 } from "@/services";
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
@@ -84,7 +84,7 @@ function AddNewCoursePage() {
 
     const response =
       currentEditedCourseId !== null
-        ? await updateCourseByIdService(
+        ? await updateAdminCourseByIdService(
             currentEditedCourseId,
             courseFinalFormData
           )
@@ -136,7 +136,7 @@ function AddNewCoursePage() {
     <div className="container mx-auto p-4">
       <div className="flex justify-between">
         <h1 className="text-3xl font-extrabold mb-5">
-          {isEditPage ? "Edit course details" : "Create a new course"}
+          {isEditPage ? "Admin edit course details" : "Admin create a new course"}
         </h1>
         <Button
           disabled={!validateFormData()}

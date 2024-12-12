@@ -1,10 +1,32 @@
 const User = require("../../models/User");
 const Course = require("../../models/Course");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 // Add new user //
 const addNewUser = async (req, res) => {
   try {
-    const userData = req.body;
-    const newUser = new User(userData);
+    // const userData = req.body;
+    const { userName, userEmail, password, role } = req.body;
+
+    const existingUser = await User.findOne({
+      $or: [{ userEmail }, { userName }],
+    });
+  
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User name or user email already exists",
+      });
+    }
+    const hashPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      userName,
+      userEmail,
+      role,
+      password: hashPassword,
+    });
+    
+    
     const savedUser = await newUser.save();
 
     if (savedUser) {
@@ -128,9 +150,67 @@ const updateUserByID = async (req, res) => {
   }
 };
 
+
+const deleteUserByID = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    if (user.role === "instructor") {
+      const createdCoursesCount = await Course.countDocuments({
+        instructorId: id,
+      });
+
+      if (createdCoursesCount > 0) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Cannot delete instructor with active courses. Please reassign or delete courses first!",
+        });
+      }
+    }
+
+    if (user.role === "user") {
+      const enrolledCoursesCount = await Course.countDocuments({
+        "students.studentId": id,
+      });
+
+      if (enrolledCoursesCount > 0) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Cannot delete user with active course enrollments. Please remove enrollments first!",
+        });
+      }
+    }
+
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully!",
+      data: deletedUser,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred while deleting user!",
+    });
+  }
+};
+
 module.exports = {
   addNewUser,
   getAllUsers,
   getUserDetailsByID,
   updateUserByID,
+  deleteUserByID
 };
