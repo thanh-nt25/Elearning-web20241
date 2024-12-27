@@ -10,7 +10,6 @@ import {
 import { AuthContext } from "@/context/auth-context";
 import { useNavigate } from "react-router-dom";
 
-// Định nghĩa trang chủ dành cho sinh viên
 function StudentHomePage() {
   const { studentViewCoursesList, setStudentViewCoursesList } =
     useContext(StudentContext);
@@ -19,7 +18,6 @@ function StudentHomePage() {
 
   const [purchaseStatus, setPurchaseStatus] = useState({});
 
-  // Hàm xử lý chuyển hướng đến trang danh sách khóa học theo danh mục
   function handleNavigateToCoursesPage(getCurrentId) {
     console.log(getCurrentId);
     sessionStorage.removeItem("filters");
@@ -32,13 +30,11 @@ function StudentHomePage() {
     navigate("/courses");
   }
 
-  // Hàm lấy danh sách khóa học từ server
   async function fetchAllStudentViewCourses() {
     const response = await fetchStudentViewCourseListService();
     if (response?.success) setStudentViewCoursesList(response?.data);
   }
 
-  // Hàm xử lý hiển thị nút mua hoặc tiếp tục học tùy thuộc vào tình trạng mua khóa học
   async function handleBuyButtonDisplay(courseId) {
     if (!auth?.user?._id) return false;
     const response = await checkCoursePurchaseInfoService(
@@ -51,7 +47,6 @@ function StudentHomePage() {
     return false;
   }
 
-  // Hàm lấy trạng thái mua hàng cho tất cả các khóa học hiển thị
   async function fetchPurchaseStatuses() {
     if (studentViewCoursesList?.length > 0) {
       const statuses = {};
@@ -63,8 +58,6 @@ function StudentHomePage() {
     }
   }
 
-
-  // Hàm xử lý chuyển trang khi người dùng click vào một khóa học
   async function handleCourseNavigate(getCurrentCourseId) {
     const response = await checkCoursePurchaseInfoService(
       getCurrentCourseId,
@@ -79,12 +72,10 @@ function StudentHomePage() {
     }
   }
 
-  // Sử dụng useEffect để gọi API lấy danh sách khóa học khi component được mount
   useEffect(() => {
     fetchAllStudentViewCourses();
   }, []);
 
-  // Sử dụng useEffect để cập nhật trạng thái mua hàng khi danh sách khóa học thay đổi
   useEffect(() => {
     fetchPurchaseStatuses();
   }, [studentViewCoursesList]);
