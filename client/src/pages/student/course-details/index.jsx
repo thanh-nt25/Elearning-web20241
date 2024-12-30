@@ -22,7 +22,10 @@ import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+// Định nghĩa trang chi tiết khóa học cho sinh viên
 function StudentViewCourseDetailsPage() {
+
+    // Sử dụng Context để quản lý trạng thái và thông tin khóa học
     const {
         studentViewCourseDetails,
         setStudentViewCourseDetails,
@@ -34,18 +37,18 @@ function StudentViewCourseDetailsPage() {
 
     const { auth } = useContext(AuthContext);
 
-    const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
-        useState(null);
+    const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] = useState(null);
     const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
     const [approvalUrl, setApprovalUrl] = useState("");
     const navigate = useNavigate();
     const { id } = useParams();
     const location = useLocation();
 
+    // Hàm lấy thông tin chi tiết khóa học từ server
     async function fetchStudentViewCourseDetails(courseId) {
         try {
             const response = await fetchStudentViewCourseDetailsService(courseId);
-    
+
             if (response?.success) {
                 setStudentViewCourseDetails(response?.data);
             } else {
@@ -59,6 +62,7 @@ function StudentViewCourseDetailsPage() {
         }
     }
 
+    // Xử lý hiển thị video xem trước miễn phí
     function handleSetFreePreview(getCurrentVideoInfo) {
         console.log(getCurrentVideoInfo);
         setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
@@ -77,9 +81,9 @@ function StudentViewCourseDetailsPage() {
                     courseTitle: studentViewCourseDetails?.title,
                     courseId: studentViewCourseDetails?._id,
                 };
-    
+
                 const response = await createFreeCourseOrderService(freeCoursePayload);
-    
+
                 if (response?.success) {
                     window.location.href = "/student-courses";
                     console.log("Free course enrolled successfully:", response.data);
@@ -110,10 +114,10 @@ function StudentViewCourseDetailsPage() {
                 courseId: studentViewCourseDetails?._id,
                 coursePricing: studentViewCourseDetails?.pricing,
             };
-    
+
             console.log(paymentPayload, "paymentPayload");
             const response = await createPaymentService(paymentPayload);
-    
+
             if (response?.success) {
                 sessionStorage.setItem(
                     "currentOrderId",
@@ -126,6 +130,7 @@ function StudentViewCourseDetailsPage() {
         }
     }
 
+    // Sử dụng useEffect để theo dõi các thay đổi của state và thực hiện các hành động phù hợp
     useEffect(() => {
         if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDialog(true);
     }, [displayCurrentVideoFreePreview]);
@@ -136,9 +141,9 @@ function StudentViewCourseDetailsPage() {
 
     useEffect(() => {
         if (id) {
-            console.log('Fetching details for course id:', id); 
+            console.log('Fetching details for course id:', id);
             setLoadingState(true);
-            setStudentViewCourseDetails(null); 
+            setStudentViewCourseDetails(null);
             fetchStudentViewCourseDetails(id);
         }
     }, [id]);
@@ -156,12 +161,15 @@ function StudentViewCourseDetailsPage() {
         }
     }, [location.pathname]);
 
+    // Hiển thị loader nếu đang tải dữ liệu
     if (loadingState) return <Skeleton />;
 
+    // Chuyển hướng nếu có URL phê duyệt thanh toán
     if (approvalUrl !== "") {
         window.location.href = approvalUrl;
     }
 
+    // Xác định chỉ số của video xem trước miễn phí
     const getIndexOfFreePreviewUrl =
         studentViewCourseDetails !== null
             ? studentViewCourseDetails?.curriculum?.findIndex(
@@ -169,6 +177,7 @@ function StudentViewCourseDetailsPage() {
             )
             : -1;
 
+    // Xây dựng giao diện người dùng cho trang chi tiết khóa học
     return (
         <div className=" mx-auto p-4">
             <div className="bg-gray-900 text-white p-8 rounded-t-lg">
@@ -223,7 +232,7 @@ function StudentViewCourseDetailsPage() {
                         <CardContent>
                             {studentViewCourseDetails?.curriculum?.map((curriculumItem, index) => (
                                 <li
-                                    key={index} 
+                                    key={index}
                                     className={`${curriculumItem?.freePreview ? "cursor-pointer" : "cursor-not-allowed"} flex items-center mb-4`}
                                     onClick={
                                         curriculumItem?.freePreview

@@ -36,13 +36,13 @@ function StudentHomePage() {
   }
 
   async function handleBuyButtonDisplay(courseId) {
-    if (!auth?.user?._id) return false; 
+    if (!auth?.user?._id) return false;
     const response = await checkCoursePurchaseInfoService(
       courseId,
       auth.user._id
     );
     if (response?.success) {
-      return response?.data; 
+      return response?.data;
     }
     return false;
   }
@@ -59,7 +59,6 @@ function StudentHomePage() {
   }
 
   async function handleCourseNavigate(getCurrentCourseId) {
-    // navigate(`/course/details/${getCurrentCourseId}`);
     const response = await checkCoursePurchaseInfoService(
       getCurrentCourseId,
       auth?.user?._id
@@ -148,7 +147,7 @@ function StudentHomePage() {
                       Buy now ${courseItem?.pricing}
                     </Button>
                   )}
-                  
+
                 </div>
               </div>
             ))
@@ -158,7 +157,7 @@ function StudentHomePage() {
         </div>
       </section>
     </div>
-      
+
   );
 }
 
